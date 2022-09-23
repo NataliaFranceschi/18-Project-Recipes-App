@@ -1,14 +1,26 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
 import App from './App';
-import * as serviceWorker from './serviceWorker';
+import Provider from './context/myProvider';
 
 ReactDOM
   .createRoot(document.getElementById('root'))
-  .render(<App />);
+  .render(
+    <Provider>
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+      <App />
+
+    </Provider>,
+  );
+
+// BrowserRouter>
+//         <Switch>
+//           <Route exact path="/" component={ Login } />
+//           <Route exact path="/search" component={ Search } />
+//           <Route exact path="/album/:id" component={ Album } />
+//           <Route exact path="/favorites" component={ Favorites } />
+//           <Route exact path="/profile" component={ Profile } />
+//           <Route exact path="/profile/edit" component={ ProfileEdit } />
+//           <Route component={ NotFound } />
+//         </Switch>
+//       </BrowserRouter>
