@@ -1,14 +1,12 @@
 import React from 'react';
-import { ReactDOM } from 'react-dom';
+import ReactDOM from 'react-dom';
+import './index.css';
 import App from './App';
 import Provider from './context/myProvider';
 
-ReactDOM
-  .createRoot(document.getElementById('root'))
-  .render(
-    <Provider>
-
-      <App />
-
-    </Provider>,
-  );
+ReactDOM.render(
+  <Provider>
+    <App />
+  </Provider>,
+  document.getElementById('root'),
+);
