@@ -4,7 +4,7 @@ import MyContext from './myContext';
 
 function Provider({ children }) {
   const [isDisabled, setIsDisabled] = useState(true);
-  const [dataInputs, setDataInputs] = useState({ name: '', password: '' });
+  const [dataInputs, setDataInputs] = useState({ email: '', password: '' });
 
   const contextValue = {
     isDisabled,

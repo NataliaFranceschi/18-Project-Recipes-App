@@ -1,14 +1,27 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import context from '../context/myContext';
+import { validationInputs } from '../utils/services';
 
 function Login() {
   const {
     isDisabled,
+    setIsDisabled,
     dataInputs,
     setDataInputs,
   } = useContext(context);
-  const { name, password } = dataInputs;
-  console.log(dataInputs);
+  const { email, password } = dataInputs;
+  // console.log(dataInputs);
+
+  useEffect(() => {
+    const validationGeneral = validationInputs(email, password);
+
+    if (validationGeneral) {
+      setIsDisabled(false);
+    } else {
+      setIsDisabled(true);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [email, password]);
 
   return (
     <div>
@@ -19,9 +32,9 @@ function Login() {
           name="email"
           id="email"
           data-testid="email-input"
-          value={ name }
+          value={ email }
           onChange={ ({ target: { value } }) => setDataInputs({ ...dataInputs,
-            name: value }) }
+            email: value }) }
         />
       </label>
       <label htmlFor="password">
