@@ -11,6 +11,13 @@ function Provider({ children }) {
     setIsDisabled,
     dataInputs,
     setDataInputs,
+    // dataInputLocalStorage,
+    // setDataInputLocalStorage,
+    // mealsTokenStorage,
+    // setMealsTokenStorage,
+    // drinksTokenStorage,
+    // setDrinksTokenStorage,
+
   };
 
   return (

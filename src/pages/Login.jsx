@@ -1,6 +1,10 @@
 import React, { useContext, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import context from '../context/myContext';
-import { validationInputs } from '../utils/services';
+// import { useStoragedrinksToken,
+//   useStorageMeals, useStorageUser } from '../utils/hooks/useStorage';
+// eslint-disable-next-line import/named
+import { validationInputs, localStorageUser } from '../utils/services';
 
 function Login() {
   const {
@@ -9,8 +13,30 @@ function Login() {
     dataInputs,
     setDataInputs,
   } = useContext(context);
+
+  const history = useHistory();
+
   const { email, password } = dataInputs;
   // console.log(dataInputs);
+  // const [dataInputLocalStorage, setDataInputLocalStorage] = useStorageUser('user', {});
+  // const [mealsTokenLocalStorage,
+  //   setMealsTokenLocalStorage] = useStorageMeals('mealsToken', '');
+
+  // const [drinksTokenLocalStorage,
+  //   setdrinksTokenLocalStorage] = useStoragedrinksToken('drinksToken', '');
+
+  // console.log(dataInputLocalStorage, mealsTokenLocalStorage, drinksTokenLocalStorage);
+
+  // const localStorage = () => {
+  //   setDataInputLocalStorage({ email });
+  //   setMealsTokenLocalStorage(1);
+  //   setdrinksTokenLocalStorage(1);
+  // };
+
+  const handleInsertStorage = () => {
+    localStorageUser({ email });
+    history.push('/meals');
+  };
 
   useEffect(() => {
     const validationGeneral = validationInputs(email, password);
@@ -53,6 +79,7 @@ function Login() {
         type="button"
         data-testid="login-submit-btn"
         disabled={ isDisabled }
+        onClick={ handleInsertStorage }
       >
         Entrar
       </button>

@@ -1,4 +1,4 @@
-import { NUMBER_SIX } from './constants';
+import { DRINKS_KEY, MEALS_KEY, NUMBER_SIX, USER_KEY } from './constants';
 
 export const validationInputs = (email, password) => {
   const emailRegex = /\S+@\S+\.\S+/;
@@ -7,6 +7,8 @@ export const validationInputs = (email, password) => {
   return validationGeneral;
 };
 
-export const teste = () => {
-  console.log('teste');
+export const localStorageUser = (email) => {
+  localStorage.setItem(USER_KEY, JSON.stringify(email));
+  localStorage.setItem(MEALS_KEY, JSON.stringify(1));
+  localStorage.setItem(DRINKS_KEY, JSON.stringify(1));
 };
