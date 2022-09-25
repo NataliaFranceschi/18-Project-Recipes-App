@@ -5,12 +5,30 @@ import MyContext from './myContext';
 function Provider({ children }) {
   const [isDisabled, setIsDisabled] = useState(true);
   const [dataInputs, setDataInputs] = useState({ email: '', password: '' });
+  const [mealsApi, setMealsApi] = useState([]);
+  const [drinksApi, setDrinksApi] = useState([]);
+
+  const fetchMeals = async () => {
+    const response = await fetch('https://www.themealdb.com/api/json/v1/1/search.php?s=');
+    const { meals } = await response.json();
+    setMealsApi(meals);
+  };
+
+  const fetchDrinks = async () => {
+    const response = await fetch('https://www.thecocktaildb.com/api/json/v1/1/search.php?s=');
+    const { drinks } = await response.json();
+    setDrinksApi(drinks);
+  };
 
   const contextValue = {
     isDisabled,
     setIsDisabled,
     dataInputs,
     setDataInputs,
+    fetchMeals,
+    mealsApi,
+    fetchDrinks,
+    drinksApi,
     // dataInputLocalStorage,
     // setDataInputLocalStorage,
     // mealsTokenStorage,
