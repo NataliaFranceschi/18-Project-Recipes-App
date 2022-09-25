@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import context from '../context/myContext';
-
+//
 function Drinks() {
   const { fetchDrinks, drinksApi } = useContext(context);
   const [categories, setCategories] = useState([]);
