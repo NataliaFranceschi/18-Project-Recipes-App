@@ -1,11 +1,12 @@
-import React, { useState, useContext } from 'react';
-import { useLocation } from 'react-router-dom';
+import React, { useState, useContext, useCallback, useEffect } from 'react';
+import { useLocation, useHistory } from 'react-router-dom';
 import context from '../context/myContext';
 import { fetchIngredient, fetchName, fetchLetter } from '../utils/requestsAPI';
 
 function SearchBar() {
+  const { push } = useHistory();
   const { pathname: pagePath } = useLocation();
-  const { setSearchResult } = useContext(context); // estado global da filtragem
+  const { searchResult, setSearchResult } = useContext(context); // estado global da filtragem
   const [searchCharacters, setSearchCharacters] = useState(''); // estado do input de texto p/ filtro
   const [userFilter, setUserFilter] = useState(''); // estado dos radios
 
@@ -30,6 +31,27 @@ function SearchBar() {
       break;
     }
   };
+
+  // Direciona para Details, se tiver apenas uma receita de comida ou bebida, ou (alert) para nenhum resultado
+  const redirectDetails = useCallback(() => {
+    if (Object.values(searchResult)[0] === undefined) {
+      console.log(Object.values(searchResult)[0], Object.values(searchResult));
+      return global.alert('Sorry, we haven\'t found any recipes for these filters.');
+    }
+    if (Object.values(searchResult)[0].length === 1) {
+      if (pagePath === '/meals') {
+        return push(`/meals/${searchResult.meals[0].idMeal}`);
+      }
+      if (pagePath === '/drinks') {
+        console.log(Object.values(searchResult)[0], Object.values(searchResult));
+        return push(`/drinks/${searchResult.drinks[0].idDrink}`);
+      }
+    }
+  }, [pagePath, push, searchResult]);
+
+  useEffect(() => {
+    redirectDetails();
+  }, [searchResult, redirectDetails]);
 
   return (
     <div>
@@ -71,7 +93,7 @@ function SearchBar() {
             name="radio"
             type="radio"
             id="firstLetterRadio"
-            onClick={ () => setUserFilter('first-letter') }
+            onClick={ () => setUserFilter('firstLetterRadio') }
           />
           Pela Letra
         </label>
