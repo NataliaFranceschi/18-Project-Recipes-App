@@ -1,57 +1,62 @@
-import React, { useState, useContext, useCallback, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
 import context from '../context/myContext';
-import { fetchIngredient, fetchName, fetchLetter } from '../utils/requestsAPI';
+import { apiRequest } from '../utils/requestsAPI';
 
 function SearchBar() {
-  const { push } = useHistory();
+  const history = useHistory();
   const { pathname: pagePath } = useLocation();
-  const { searchResult, setSearchResult } = useContext(context); // estado global da filtragem
-  const [searchCharacters, setSearchCharacters] = useState(''); // estado do input de texto p/ filtro
-  const [userFilter, setUserFilter] = useState(''); // estado dos radios
 
-  const handleSubmitButton = async (e) => {
-    e.preventDefault();
-    switch (userFilter) {
-    case 'ingredientsRadio':
-      setSearchResult(await fetchIngredient(searchCharacters, pagePath));
-      break;
-    case 'nameRadio':
-      setSearchResult(await fetchName(searchCharacters, pagePath));
-      break;
-    case 'firstLetterRadio':
-      if (searchCharacters.length !== 1) {
-        global.alert('Your search must have only 1 (one) character');
-        break;
+  console.log(pagePath === '/meals');
+
+  const { searchResult, setSearchResult,
+    setLoading,
+    setCategoryON,
+    setSearchON,
+  } = useContext(context);
+
+  const [searchCharacters, setSearchCharacters] = useState('');
+  const [userFilter, setUserFilter] = useState('ingredientsRadio'); // estado dos radios
+
+  console.log(searchResult);
+
+  const handleSubmitButton = async () => {
+    const SIZE_SEARCH = Number(searchCharacters.length);
+    if (SIZE_SEARCH > 1 && userFilter === 'firstLetterRadio') {
+      global.alert('Your search must have only 1 (one) character');
+    }
+    setLoading(true);
+    if (pagePath === '/meals') {
+      const returnFilter = await apiRequest(userFilter, searchCharacters, pagePath);
+      if (returnFilter.meals === null) {
+        global.alert('Sorry, we haven\'t found any recipes for these filters.');
+      } else if (returnFilter.meals.length === 1) {
+        history.push(`/meals/${returnFilter.meals[0].idMeal}`);
       }
-      setSearchResult(await fetchLetter(searchCharacters, pagePath));
-      break;
-    default:
-      global.alert('selecione um filtro para pesquisar');
-      break;
+
+      if (returnFilter.meals !== null) {
+        setSearchON(true);
+        setCategoryON(false);
+        setSearchResult(returnFilter);
+      }
+      setLoading(false);
+    }
+
+    if (pagePath === '/drinks') {
+      const returnFilter = await apiRequest(userFilter, searchCharacters, pagePath);
+      if (returnFilter.drinks === null) {
+        global.alert('Sorry, we haven\'t found any recipes for these filters.');
+      } else if (returnFilter.drinks.length === 1) {
+        history.push(`/drinks/${returnFilter.drinks[0].idDrink}`);
+      }
+      if (returnFilter.drinks !== null) {
+        setSearchON(true);
+        setCategoryON(false);
+        setSearchResult(returnFilter);
+      }
+      setLoading(false);
     }
   };
-
-  // Direciona para Details, se tiver apenas uma receita de comida ou bebida, ou (alert) para nenhum resultado
-  const redirectDetails = useCallback(() => {
-    if (Object.values(searchResult)[0] === undefined) {
-      console.log(Object.values(searchResult)[0], Object.values(searchResult));
-      return global.alert('Sorry, we haven\'t found any recipes for these filters.');
-    }
-    if (Object.values(searchResult)[0].length === 1) {
-      if (pagePath === '/meals') {
-        return push(`/meals/${searchResult.meals[0].idMeal}`);
-      }
-      if (pagePath === '/drinks') {
-        console.log(Object.values(searchResult)[0], Object.values(searchResult));
-        return push(`/drinks/${searchResult.drinks[0].idDrink}`);
-      }
-    }
-  }, [pagePath, push, searchResult]);
-
-  useEffect(() => {
-    redirectDetails();
-  }, [searchResult, redirectDetails]);
 
   return (
     <div>
@@ -72,8 +77,9 @@ function SearchBar() {
             data-testid="ingredient-search-radio"
             type="radio"
             name="radio"
+            value="ingredientsRadio"
             id="ingredientsRadio"
-            onClick={ () => setUserFilter('ingredientsRadio') }
+            onChange={ ({ target: { value } }) => setUserFilter(value) }
           />
           Por Ingrediente
         </label>
@@ -83,7 +89,7 @@ function SearchBar() {
             type="radio"
             name="radio"
             id="nameRadio"
-            onClick={ () => setUserFilter('nameRadio') }
+            onChange={ ({ target: { value } }) => setUserFilter(value) }
           />
           Por Nome
         </label>
@@ -92,19 +98,21 @@ function SearchBar() {
             data-testid="first-letter-search-radio"
             name="radio"
             type="radio"
+            value="firstLetterRadio"
             id="firstLetterRadio"
-            onClick={ () => setUserFilter('firstLetterRadio') }
+            onChange={ ({ target: { value } }) => setUserFilter(value) }
           />
           Pela Letra
         </label>
         <button
           data-testid="exec-search-btn"
           type="button"
-          onClick={ handleSubmitButton }
+          onClick={ () => handleSubmitButton() }
         >
           Buscar
         </button>
       </form>
+      {/* <RecipeCard /> */}
     </div>
   );
 }

@@ -3,10 +3,15 @@ import { Link } from 'react-router-dom';
 import context from '../context/myContext';
 
 function Meals() {
-  const { fetchMeals, mealsApi } = useContext(context);
+  const { fetchMeals, mealsApi, categoryON,
+    setCategoryON,
+    searchON,
+    setSearchON,
+    searchResult,
+  } = useContext(context);
+
   const [categories, setCategories] = useState([]);
   const [categoryMeal, setCategoryMeal] = useState([]);
-  const [categoryOff, setCategoryOff] = useState(true);
 
   const fetchCategoryMeals = async () => {
     const response = await fetch('https://www.themealdb.com/api/json/v1/1/list.php?c=list');
@@ -18,6 +23,8 @@ function Meals() {
   useEffect(() => {
     fetchMeals();
     fetchCategoryMeals();
+    setCategoryON(false);
+    setSearchON(false);
   }, []);
 
   const twelveRecipes = (array) => {
@@ -29,12 +36,24 @@ function Meals() {
     const response = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${category}`);
     const { meals } = await response.json();
     setCategoryMeal(meals);
-    setCategoryOff(false);
+    setCategoryON(!categoryON);
+    setSearchON(false);
   };
 
   const allMeals = () => {
-    setCategoryOff(true);
+    setCategoryON(false);
+    setSearchON(false);
   };
+
+  const renderCard = () => {
+    if (categoryON) {
+      return categoryMeal;
+    } if (searchON) {
+      return searchResult.meals;
+    }
+    return mealsApi;
+  };
+
   return (
     <div>
       <div>
@@ -58,7 +77,7 @@ function Meals() {
         </button>
       </div>
       <div>
-        { (categoryOff ? twelveRecipes(mealsApi) : twelveRecipes(categoryMeal))
+        {renderCard() !== undefined && twelveRecipes(renderCard())
           .map((meal, index) => (
             <Link key={ index } to={ `meals/${meal.idMeal}` }>
               <div
@@ -74,6 +93,7 @@ function Meals() {
             </Link>
           ))}
       </div>
+
     </div>
   );
 }

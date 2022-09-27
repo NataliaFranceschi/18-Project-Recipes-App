@@ -6,6 +6,7 @@ function Profile({ match }) {
   return (
     <div>
       <Header name={ match.path } />
+
     </div>
   );
 }
