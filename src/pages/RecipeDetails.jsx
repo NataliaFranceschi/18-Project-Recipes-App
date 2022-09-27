@@ -5,6 +5,7 @@ import Carousel from 'react-bootstrap/Carousel';
 import { recipeDetailsAPI, recipeAPI } from '../utils/requestsAPI';
 import '../style/details.css';
 import shareIcon from '../images/shareIcon.svg';
+import { getDoneRecipes } from '../utils/services';
 
 function RecipeDetails({ match }) {
   const [item, setItem] = useState('');
@@ -14,6 +15,7 @@ function RecipeDetails({ match }) {
   const [measure, setMeasure] = useState([]);
   const [recommended, setRecommended] = useState([]);
   const [alertCopy, setAlertCopy] = useState(false);
+  const [startBtt, setSratBtt] = useState(true);
   const NUMBER_OF_RECOMMENDATIONS = 6;
 
   const filterIngredients = (key, response) => {
@@ -39,6 +41,7 @@ function RecipeDetails({ match }) {
           setreverseItem('Meal');
         },
       };
+      setSratBtt(getDoneRecipes().some((e) => e.id === match.params.id));
 
       const data = await recipeAPI[match.path]();
       const key = Object.keys(data)[0];
@@ -121,14 +124,19 @@ function RecipeDetails({ match }) {
             ))
         }
       </Carousel>
-      <button
-        type="button"
-        data-testid="start-recipe-btn"
-        className="button_start_recipe"
-        onClick={ redirect }
-      >
-        Start Recipe
-      </button>
+      {
+        !startBtt
+      && (
+        <button
+          type="button"
+          data-testid="start-recipe-btn"
+          className="button_start_recipe"
+          onClick={ redirect }
+        >
+          Start Recipe
+        </button>
+      )
+      }
       <div className="buttons_container">
         <button
           type="button"
