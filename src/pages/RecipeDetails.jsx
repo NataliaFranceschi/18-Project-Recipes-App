@@ -1,16 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import recipeDetailsAPI from '../utils/requestsAPI';
+import Carousel from 'react-bootstrap/Carousel';
+import { recipeDetailsAPI, recipeAPI } from '../utils/requestsAPI';
 
 function RecipeDetails({ match }) {
   const [item, setItem] = useState('');
+  const [reverseItem, setreverseItem] = useState('');
   const [details, setDetails] = useState({});
   const [ingredients, setIngredients] = useState([]);
   const [measure, setMeasure] = useState([]);
+  const [recommended, setRecommended] = useState([]);
+  const NUMBER_OF_RECOMMENDATIONS = 6;
 
   const filterIngredients = (key, response) => {
     const entriesIngredients = Object.entries(response).filter((e) => (
-      e[0].includes(key) === true && e[1] !== null));
+      e[0].includes(key)
+      === true && e[1] !== '' && e[1] !== ' ' && e[1] !== null));
     const ingredientes = entriesIngredients.map((e) => e[1]);
     return ingredientes;
   };
@@ -21,9 +26,20 @@ function RecipeDetails({ match }) {
       const firstItem = Object.keys(response)[0];
       setDetails(response[firstItem][0]);
       const saveItem = {
-        '/meals/:id': () => setItem('Meal'),
-        '/drinks/:id': () => setItem('Drink'),
+        '/meals/:id': () => {
+          setItem('Meal');
+          setreverseItem('Drink');
+        },
+        '/drinks/:id': () => {
+          setItem('Drink');
+          setreverseItem('Meal');
+        },
       };
+
+      const data = await recipeAPI[match.path]();
+      const key = Object.keys(data)[0];
+      setRecommended(data[key]);
+
       saveItem[match.path]();
       setIngredients(filterIngredients('strIngredient', response[firstItem][0]));
       setMeasure(filterIngredients('strMeasure', response[firstItem][0]));
@@ -71,6 +87,26 @@ function RecipeDetails({ match }) {
           data-testid="video"
         />
       }
+      <Carousel>
+        {
+          recommended.filter((_, index) => index < NUMBER_OF_RECOMMENDATIONS)
+            .map((e, i) => (
+              <Carousel.Item
+                key={ i }
+                data-testid={ `${i}-recommendation-card` }
+              >
+                <img
+                  className="d-block w-100"
+                  src={ e[`str${reverseItem}Thumb`] }
+                  alt="First slide"
+                />
+                <Carousel.Caption data-testid={ `${i}-recommendation-title` }>
+                  <h3>{ e[`str${reverseItem}`] }</h3>
+                </Carousel.Caption>
+              </Carousel.Item>
+            ))
+        }
+      </Carousel>
     </div>
   );
 }
