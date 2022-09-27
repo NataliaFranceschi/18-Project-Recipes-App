@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Meals from '../components/Meals';
 import Drinks from '../components/Drinks';
 import Header from '../components/Header';
+import Footer from '../components/Footer';
 
 function Recipes({ match }) {
   return (
@@ -11,6 +12,7 @@ function Recipes({ match }) {
       {
         (match.path === '/meals') ? <Meals /> : <Drinks />
       }
+      <Footer />
     </div>
   );
 }
