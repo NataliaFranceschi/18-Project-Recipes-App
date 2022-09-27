@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router';
 import PropTypes from 'prop-types';
 import Carousel from 'react-bootstrap/Carousel';
 import { recipeDetailsAPI, recipeAPI } from '../utils/requestsAPI';
+import '../style/details.css';
+import shareIcon from '../images/shareIcon.svg';
 
 function RecipeDetails({ match }) {
   const [item, setItem] = useState('');
@@ -10,6 +13,7 @@ function RecipeDetails({ match }) {
   const [ingredients, setIngredients] = useState([]);
   const [measure, setMeasure] = useState([]);
   const [recommended, setRecommended] = useState([]);
+  const [alertCopy, setAlertCopy] = useState(false);
   const NUMBER_OF_RECOMMENDATIONS = 6;
 
   const filterIngredients = (key, response) => {
@@ -46,6 +50,16 @@ function RecipeDetails({ match }) {
     };
     request();
   }, []);
+
+  const history = useHistory();
+  const redirect = () => {
+    history.push(`${match.url}/in-progress`);
+  };
+
+  const copyBoard = () => {
+    navigator.clipboard.writeText(`http://localhost:3000${match.url}`);
+    setAlertCopy(true);
+  };
 
   return (
     <div>
@@ -107,6 +121,35 @@ function RecipeDetails({ match }) {
             ))
         }
       </Carousel>
+      <button
+        type="button"
+        data-testid="start-recipe-btn"
+        className="button_start_recipe"
+        onClick={ redirect }
+      >
+        Start Recipe
+      </button>
+      <div className="buttons_container">
+        <button
+          type="button"
+          data-testid="share-btn"
+          className="button"
+          onClick={ copyBoard }
+        >
+          <img src={ shareIcon } alt="shareIcon" />
+        </button>
+        {
+          alertCopy
+          && <p>Link copied!</p>
+        }
+        <button
+          type="button"
+          data-testid="favorite-btn"
+          className="button"
+        >
+          Favoritar
+        </button>
+      </div>
     </div>
   );
 }
@@ -114,6 +157,7 @@ function RecipeDetails({ match }) {
 RecipeDetails.propTypes = {
   match: PropTypes.shape({
     path: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
     params: PropTypes.shape({
       id: PropTypes.string.isRequired,
     }).isRequired,

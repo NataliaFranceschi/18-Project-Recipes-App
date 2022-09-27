@@ -1,0 +1,9 @@
+.button_start_recipe {
+  bottom: 0;
+  position: fixed;
+}
+
+.buttons_container {
+  display: flex;
+  justify-content: center;
+}
