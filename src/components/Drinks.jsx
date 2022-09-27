@@ -3,10 +3,15 @@ import { Link } from 'react-router-dom';
 import context from '../context/myContext';
 //
 function Drinks() {
-  const { fetchDrinks, drinksApi } = useContext(context);
+  const { fetchDrinks, drinksApi,
+    setCategoryON,
+    searchON,
+    setSearchON,
+    searchResult,
+    categoryON,
+  } = useContext(context);
   const [categories, setCategories] = useState([]);
   const [categoryDrink, setCategoryDrink] = useState([]);
-  const [categoryOff, setCategoryOff] = useState(true);
 
   const fetchCategoryDrinks = async () => {
     const response = await fetch('https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list');
@@ -19,6 +24,8 @@ function Drinks() {
   useEffect(() => {
     fetchDrinks();
     fetchCategoryDrinks();
+    setCategoryON(false);
+    setSearchON(false);
   }, []);
 
   const twelveRecipes = (array) => {
@@ -30,11 +37,22 @@ function Drinks() {
     const response = await fetch(`https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=${category}`);
     const { drinks } = await response.json();
     setCategoryDrink(drinks);
-    setCategoryOff(false);
+    setCategoryON(!categoryON);
+    setSearchON(false);
   };
 
   const allDrinks = () => {
-    setCategoryOff(true);
+    setCategoryON(false);
+    setSearchON(false);
+  };
+
+  const renderCard = () => {
+    if (categoryON) {
+      return categoryDrink;
+    } if (searchON) {
+      return searchResult.drinks;
+    }
+    return drinksApi;
   };
 
   return (
@@ -60,7 +78,7 @@ function Drinks() {
         </button>
       </div>
       <div>
-        {(categoryOff ? twelveRecipes(drinksApi) : twelveRecipes(categoryDrink))
+        {renderCard() !== undefined && twelveRecipes(renderCard())
           .map((drink, index) => (
             <Link key={ index } to={ `drinks/${drink.idDrink}` }>
               <div data-testid={ `${index}-recipe-card` }>

@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router';
 import profileIcon from '../images/profileIcon.svg';
 import searchIcon from '../images/searchIcon.svg';
+import SearchBar from './SearchBar';
 
 function Header({ name }) {
+  const [showElement, setShowElement] = useState(false);
   const validationHeader = {
     '/meals': ['Meals', { perfil: true }, { pesquisa: true }],
     '/drinks': ['Drinks', { perfil: true }, { pesquisa: true }],
@@ -40,7 +42,7 @@ function Header({ name }) {
         && (
           <button
             type="button"
-            // onClick={ redirect }
+            onClick={ () => setShowElement(!showElement) }
           >
             <img
               data-testid="search-top-btn"
@@ -51,6 +53,7 @@ function Header({ name }) {
         )
       }
       <h1 ata-testid="page-title">{ validationHeader[name][0] }</h1>
+      { showElement && <SearchBar /> }
     </div>
   );
 }

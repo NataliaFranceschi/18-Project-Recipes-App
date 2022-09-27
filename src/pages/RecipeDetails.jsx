@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import recipeDetailsAPI from '../utils/requestsAPI';
 
-function RecepeDetails({ match }) {
+function RecipeDetails({ match }) {
   const [item, setItem] = useState('');
   const [details, setDetails] = useState({});
   const [ingredients, setIngredients] = useState([]);
@@ -75,7 +75,7 @@ function RecepeDetails({ match }) {
   );
 }
 
-RecepeDetails.propTypes = {
+RecipeDetails.propTypes = {
   match: PropTypes.shape({
     path: PropTypes.string.isRequired,
     params: PropTypes.shape({
@@ -83,4 +83,4 @@ RecepeDetails.propTypes = {
     }).isRequired,
   }).isRequired };
 
-export default RecepeDetails;
+export default RecipeDetails;

@@ -5,8 +5,16 @@ import MyContext from './myContext';
 function Provider({ children }) {
   const [isDisabled, setIsDisabled] = useState(true);
   const [dataInputs, setDataInputs] = useState({ email: '', password: '' });
+  // Para resultado da pesquisa no SearchBar
+  const [searchResult, setSearchResult] = useState('');
+
   const [mealsApi, setMealsApi] = useState([]);
   const [drinksApi, setDrinksApi] = useState([]);
+
+  const [loading, setLoading] = useState(false);
+  const [selectedRadioButton, setSelectedRadioButton] = useState('ingredientsRadio'); // estado do input de t
+  const [categoryON, setCategoryON] = useState(false);
+  const [searchON, setSearchON] = useState(false);
 
   const fetchMeals = async () => {
     const response = await fetch('https://www.themealdb.com/api/json/v1/1/search.php?s=');
@@ -29,12 +37,23 @@ function Provider({ children }) {
     mealsApi,
     fetchDrinks,
     drinksApi,
+    loading,
+    setLoading,
+    selectedRadioButton,
+    setSelectedRadioButton,
+    categoryON,
+    setCategoryON,
+    searchON,
+    setSearchON,
+
     // dataInputLocalStorage,
     // setDataInputLocalStorage,
     // mealsTokenStorage,
     // setMealsTokenStorage,
     // drinksTokenStorage,
     // setDrinksTokenStorage,
+    searchResult,
+    setSearchResult,
 
   };
 
