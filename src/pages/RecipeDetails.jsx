@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { useHistory, useLocation } from 'react-router-dom';
 import recipeDetailsAPI from '../utils/requestsAPI';
 
 function RecipeDetails({ match }) {
+  // const [checkedClick, setCheckded]
   const [item, setItem] = useState('');
   const [details, setDetails] = useState({});
   const [ingredients, setIngredients] = useState([]);
   const [measure, setMeasure] = useState([]);
+  const history = useHistory();
+  const { pathname: pagePath } = useLocation();
 
   const filterIngredients = (key, response) => {
     const entriesIngredients = Object.entries(response).filter((e) => (
@@ -15,21 +19,35 @@ function RecipeDetails({ match }) {
     return ingredientes;
   };
 
+  // console.log(match);
+
   useEffect(() => {
     const request = async () => {
       const response = await recipeDetailsAPI[match.path](match.params.id);
+      console.log(response);
+      console.log(match.path, match.params.id);
       const firstItem = Object.keys(response)[0];
       setDetails(response[firstItem][0]);
       const saveItem = {
         '/meals/:id': () => setItem('Meal'),
         '/drinks/:id': () => setItem('Drink'),
       };
+      console.log(saveItem);
       saveItem[match.path]();
       setIngredients(filterIngredients('strIngredient', response[firstItem][0]));
       setMeasure(filterIngredients('strMeasure', response[firstItem][0]));
     };
     request();
   }, []);
+
+  const buttonTest = () => {
+    if (pagePath === `/meals/${match.params.id}`) {
+      history.push(`/meals/${match.params.id}/in-progress`);
+    } else {
+      history.push(`/drinks/${match.params.id}/in-progress`);
+    }
+    console.log(pagePath);
+  };
 
   return (
     <div>
@@ -43,14 +61,17 @@ function RecipeDetails({ match }) {
           )
       }
       {
-        ingredients.map((e, i) => (
-          <p
-            key={ e }
-            data-testid={ `${i}-ingredient-name-and-measure` }
-          >
-            {`${e}: ${measure[i]}`}
-          </p>
-        ))
+        ingredients
+          .filter((ele) => ele !== '')
+
+          .map((e, i) => (
+            <p
+              key={ e }
+              data-testid={ `${i}-ingredient-name-and-measure` }
+            >
+              {`${e}: ${measure[i]}`}
+            </p>
+          ))
       }
       <p data-testid="instructions">{ details.strInstructions }</p>
       {
@@ -71,6 +92,9 @@ function RecipeDetails({ match }) {
           data-testid="video"
         />
       }
+      <button onClick={ buttonTest } type="button">
+        Test
+      </button>
     </div>
   );
 }
