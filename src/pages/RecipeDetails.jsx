@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Carousel from 'react-bootstrap/Carousel';
 import { recipeDetailsAPI, recipeAPI } from '../utils/requestsAPI';
 import '../style/details.css';
-import { getDoneRecipes } from '../utils/services';
+import { getDoneRecipes, getInProgressRecipes } from '../utils/services';
 import FavShareBar from '../components/FavShareBar';
 
 function RecipeDetails({ match }) {
@@ -14,7 +14,8 @@ function RecipeDetails({ match }) {
   const [ingredients, setIngredients] = useState([]);
   const [measure, setMeasure] = useState([]);
   const [recommended, setRecommended] = useState([]);
-  const [startBtt, setSratBtt] = useState(true);
+  const [startBtt, setStartBtt] = useState(true);
+  const [nameStartBtt, setNameStartBtt] = useState(false);
   const NUMBER_OF_RECOMMENDATIONS = 6;
 
   const filterIngredients = (key, response) => {
@@ -40,7 +41,13 @@ function RecipeDetails({ match }) {
           setreverseItem('Meal');
         },
       };
-      setSratBtt(getDoneRecipes().some((e) => e.id === match.params.id));
+
+      setStartBtt(getDoneRecipes().some((e) => e.id === match.params.id));
+
+      const inProgressKey = match.path === '/meals/:id' ? 'meals' : 'drinks';
+      const inProgressLocal = getInProgressRecipes();
+      setNameStartBtt(Object.keys(inProgressLocal[inProgressKey])
+        .includes(match.params.id));
 
       const data = await recipeAPI[match.path]();
       const key = Object.keys(data)[0];
@@ -127,7 +134,7 @@ function RecipeDetails({ match }) {
           className="button_start_recipe"
           onClick={ redirect }
         >
-          Start Recipe
+          { !nameStartBtt ? 'Start Recipe' : 'Continue Recipe' }
         </button>
       )
       }
