@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import Carousel from 'react-bootstrap/Carousel';
 import { recipeDetailsAPI, recipeAPI } from '../utils/requestsAPI';
 import '../style/details.css';
-import shareIcon from '../images/shareIcon.svg';
 import { getDoneRecipes } from '../utils/services';
+import FavShareBar from '../components/FavShareBar';
 
 function RecipeDetails({ match }) {
   const [item, setItem] = useState('');
@@ -14,7 +14,6 @@ function RecipeDetails({ match }) {
   const [ingredients, setIngredients] = useState([]);
   const [measure, setMeasure] = useState([]);
   const [recommended, setRecommended] = useState([]);
-  const [alertCopy, setAlertCopy] = useState(false);
   const [startBtt, setSratBtt] = useState(true);
   const NUMBER_OF_RECOMMENDATIONS = 6;
 
@@ -57,11 +56,6 @@ function RecipeDetails({ match }) {
   const history = useHistory();
   const redirect = () => {
     history.push(`${match.url}/in-progress`);
-  };
-
-  const copyBoard = () => {
-    navigator.clipboard.writeText(`http://localhost:3000${match.url}`);
-    setAlertCopy(true);
   };
 
   return (
@@ -137,27 +131,7 @@ function RecipeDetails({ match }) {
         </button>
       )
       }
-      <div className="buttons_container">
-        <button
-          type="button"
-          data-testid="share-btn"
-          className="button"
-          onClick={ copyBoard }
-        >
-          <img src={ shareIcon } alt="shareIcon" />
-        </button>
-        {
-          alertCopy
-          && <p>Link copied!</p>
-        }
-        <button
-          type="button"
-          data-testid="favorite-btn"
-          className="button"
-        >
-          Favoritar
-        </button>
-      </div>
+      <FavShareBar url={ match.url } />
     </div>
   );
 }
