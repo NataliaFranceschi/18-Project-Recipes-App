@@ -3,7 +3,8 @@ import {
   MEALS_KEY,
   NUMBER_SIX,
   USER_KEY,
-  DONE_RECIPES } from './constants';
+  DONE_RECIPES,
+  IN_PROGRESS } from './constants';
 
 export const validationInputs = (email, password) => {
   const emailRegex = /\S+@\S+\.\S+/;
@@ -24,4 +25,15 @@ export const getDoneRecipes = () => {
     return [];
   }
   return doneRecipes;
+};
+
+export const getInProgressRecipes = () => {
+  const inProgressRecipes = JSON.parse(localStorage.getItem(IN_PROGRESS));
+  if (inProgressRecipes === null) {
+    return {
+      drinks: {},
+      meals: {},
+    };
+  }
+  return inProgressRecipes;
 };
