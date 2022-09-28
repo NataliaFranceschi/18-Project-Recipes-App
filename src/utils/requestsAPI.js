@@ -89,3 +89,39 @@ export const recipeAPI = {
     return response;
   },
 };
+
+export const fetchMeals = async () => {
+  const response = await fetch('https://www.themealdb.com/api/json/v1/1/search.php?s=');
+  const { meals } = await response.json();
+  return meals;
+};
+
+export const fetchDrinks = async () => {
+  const response = await fetch('https://www.thecocktaildb.com/api/json/v1/1/search.php?s=');
+  const { drinks } = await response.json();
+  return drinks;
+};
+
+export const fetchCategoriesDrinks = async () => {
+  const response = await fetch('https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list');
+  const { drinks } = await response.json();
+  return drinks;
+};
+
+export const fetchCategoriesMeals = async () => {
+  const response = await fetch('https://www.themealdb.com/api/json/v1/1/list.php?c=list');
+  const { meals } = await response.json();
+  return meals;
+};
+
+export const fetchCaterogyDrink = async (category) => {
+  const response = await fetch(`https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=${category}`);
+  const { drinks } = await response.json();
+  return drinks;
+};
+
+export const fetchCategoryMeal = async (category) => {
+  const response = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${category}`);
+  const { meals } = await response.json();
+  return meals;
+};

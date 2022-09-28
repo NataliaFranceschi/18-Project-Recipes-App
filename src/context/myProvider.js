@@ -8,35 +8,16 @@ function Provider({ children }) {
   // Para resultado da pesquisa no SearchBar
   const [searchResult, setSearchResult] = useState('');
 
-  const [mealsApi, setMealsApi] = useState([]);
-  const [drinksApi, setDrinksApi] = useState([]);
-
   const [loading, setLoading] = useState(false);
   const [selectedRadioButton, setSelectedRadioButton] = useState('ingredientsRadio'); // estado do input de t
   const [categoryON, setCategoryON] = useState(false);
   const [searchON, setSearchON] = useState(false);
-
-  const fetchMeals = async () => {
-    const response = await fetch('https://www.themealdb.com/api/json/v1/1/search.php?s=');
-    const { meals } = await response.json();
-    setMealsApi(meals);
-  };
-
-  const fetchDrinks = async () => {
-    const response = await fetch('https://www.thecocktaildb.com/api/json/v1/1/search.php?s=');
-    const { drinks } = await response.json();
-    setDrinksApi(drinks);
-  };
 
   const contextValue = {
     isDisabled,
     setIsDisabled,
     dataInputs,
     setDataInputs,
-    fetchMeals,
-    mealsApi,
-    fetchDrinks,
-    drinksApi,
     loading,
     setLoading,
     selectedRadioButton,

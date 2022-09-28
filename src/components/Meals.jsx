@@ -1,9 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import context from '../context/myContext';
+import { fetchMeals, fetchCategoriesMeals,
+  fetchCategoryMeal } from '../utils/requestsAPI';
 
 function Meals() {
-  const { fetchMeals, mealsApi, categoryON,
+  const { categoryON,
     setCategoryON,
     searchON,
     setSearchON,
@@ -12,17 +14,19 @@ function Meals() {
 
   const [categories, setCategories] = useState([]);
   const [categoryMeal, setCategoryMeal] = useState([]);
-
-  const fetchCategoryMeals = async () => {
-    const response = await fetch('https://www.themealdb.com/api/json/v1/1/list.php?c=list');
-    const { meals } = await response.json();
-    const NUMBER_OF_CATEGORIES = 5;
-    setCategories(meals.filter((_, index) => index >= 0 && index < NUMBER_OF_CATEGORIES));
-  };
+  const [mealsApi, setMealsApi] = useState([]);
 
   useEffect(() => {
-    fetchMeals();
-    fetchCategoryMeals();
+    const request = async () => {
+      const response = await fetchMeals();
+      setMealsApi(response);
+
+      const data = await fetchCategoriesMeals();
+      const NUMBER_OF_CATEGORIES = 5;
+      setCategories(data
+        .filter((_, index) => index >= 0 && index < NUMBER_OF_CATEGORIES));
+    };
+    request();
     setCategoryON(false);
     setSearchON(false);
   }, []);
@@ -33,9 +37,8 @@ function Meals() {
   };
 
   const handleClick = async (category) => {
-    const response = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${category}`);
-    const { meals } = await response.json();
-    setCategoryMeal(meals);
+    const response = await fetchCategoryMeal(category);
+    setCategoryMeal(response);
     setCategoryON(!categoryON);
     setSearchON(false);
   };
