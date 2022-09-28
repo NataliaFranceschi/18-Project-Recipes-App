@@ -7,7 +7,13 @@ import context from '../context/myContext';
 function RecipeInProgress({ match }) {
   const [checkClick, setCheckClick] = useState(false);
   const { id } = useParams();
-  const { addMeals, addDrinks, progressRecipe, setProgressRecipe, removeMeals } = useContext(context);
+  const {
+    addMeals,
+    addDrinks,
+    progressRecipe,
+    setProgressRecipe,
+    removeMeals,
+  } = useContext(context);
   const [item, setItem] = useState('');
   const [details, setDetails] = useState({});
   const [ingredients, setIngredients] = useState([]);

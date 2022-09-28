@@ -78,6 +78,17 @@ export const recipeDetailsAPI = {
 export const recipeInProgressAPI = {
   '/meals/:id/in-progress': async (id) => {
     const URL = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`;
+    const data = await fetch(URL);
+    const response = await data.json();
+    return response;
+  },
+  '/drinks/:id/in-progress': async (id) => {
+    const URL = `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`;
+    const data = await fetch(URL);
+    const response = await data.json();
+    return response;
+  },
+};
 
 export const recipeAPI = {
   '/meals/:id': async () => {
