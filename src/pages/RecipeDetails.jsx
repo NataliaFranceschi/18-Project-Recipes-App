@@ -78,13 +78,13 @@ function RecipeDetails({ match }) {
       }
       {
         ingredients.map((e, i) => (
-          <p
-            key={ e }
-            data-testid={ `${i}-ingredient-name-and-measure` }
-          >
-            {`${e}: ${measure[i]}`}
-          </p>
-        ))
+            <p
+              key={ i }
+              data-testid={ `${i}-ingredient-name-and-measure` }
+            >
+              {`${e}: ${measure[i]}`}
+            </p>
+          ))
       }
       <p data-testid="instructions">{ details.strInstructions }</p>
       {
