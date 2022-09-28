@@ -17,3 +17,6 @@ export const DRINKS_KEY = 'drinksToken';
 
 export const URL_FILTER_API = 'https://www.themealdb.com/api/json/v1/1/filter.php?i=';
 export const URL_SEARCH_API = 'https://www.themealdb.com/api/json/v1/1/search.php?f=';
+
+export const DONE_RECIPES = 'doneRecipes';
+export const IN_PROGRESS = 'inProgressRecipes';

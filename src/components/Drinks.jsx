@@ -1,9 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import context from '../context/myContext';
-//
+import { fetchCategoriesDrinks, fetchDrinks,
+  fetchCaterogyDrink } from '../utils/requestsAPI';
+
 function Drinks() {
-  const { fetchDrinks, drinksApi,
+  const {
     setCategoryON,
     searchON,
     setSearchON,
@@ -12,18 +14,19 @@ function Drinks() {
   } = useContext(context);
   const [categories, setCategories] = useState([]);
   const [categoryDrink, setCategoryDrink] = useState([]);
-
-  const fetchCategoryDrinks = async () => {
-    const response = await fetch('https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list');
-    const { drinks } = await response.json();
-    const NUMBER_OF_CATEGORIES = 5;
-    setCategories(drinks
-      .filter((_, index) => index >= 0 && index < NUMBER_OF_CATEGORIES));
-  };
+  const [drinksApi, setDrinksApi] = useState([]);
 
   useEffect(() => {
-    fetchDrinks();
-    fetchCategoryDrinks();
+    const request = async () => {
+      const response = await fetchDrinks();
+      setDrinksApi(response);
+
+      const data = await fetchCategoriesDrinks();
+      const NUMBER_OF_CATEGORIES = 5;
+      setCategories(data
+        .filter((_, index) => index >= 0 && index < NUMBER_OF_CATEGORIES));
+    };
+    request();
     setCategoryON(false);
     setSearchON(false);
   }, []);
@@ -34,9 +37,8 @@ function Drinks() {
   };
 
   const handleClick = async (category) => {
-    const response = await fetch(`https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=${category}`);
-    const { drinks } = await response.json();
-    setCategoryDrink(drinks);
+    const response = await fetchCaterogyDrink(category);
+    setCategoryDrink(response);
     setCategoryON(!categoryON);
     setSearchON(false);
   };

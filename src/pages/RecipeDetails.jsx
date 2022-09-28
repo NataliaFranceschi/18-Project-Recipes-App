@@ -1,38 +1,58 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router';
 import PropTypes from 'prop-types';
-import { useHistory, useLocation } from 'react-router-dom';
-import recipeDetailsAPI from '../utils/requestsAPI';
+import Carousel from 'react-bootstrap/Carousel';
+import { recipeDetailsAPI, recipeAPI } from '../utils/requestsAPI';
+import '../style/details.css';
+import { getDoneRecipes, getInProgressRecipes } from '../utils/services';
+import FavShareBar from '../components/FavShareBar';
 
 function RecipeDetails({ match }) {
-  // const [checkedClick, setCheckded]
   const [item, setItem] = useState('');
+  const [reverseItem, setreverseItem] = useState('');
   const [details, setDetails] = useState({});
   const [ingredients, setIngredients] = useState([]);
   const [measure, setMeasure] = useState([]);
-  const history = useHistory();
-  const { pathname: pagePath } = useLocation();
+  const [recommended, setRecommended] = useState([]);
+  const [startBtt, setStartBtt] = useState(true);
+  const [nameStartBtt, setNameStartBtt] = useState(false);
+  const NUMBER_OF_RECOMMENDATIONS = 6;
 
   const filterIngredients = (key, response) => {
     const entriesIngredients = Object.entries(response).filter((e) => (
-      e[0].includes(key) === true && e[1] !== null));
+      e[0].includes(key)
+      === true && e[1] !== '' && e[1] !== ' ' && e[1] !== null));
     const ingredientes = entriesIngredients.map((e) => e[1]);
     return ingredientes;
   };
 
-  // console.log(match);
-
   useEffect(() => {
     const request = async () => {
       const response = await recipeDetailsAPI[match.path](match.params.id);
-      console.log(response);
-      console.log(match.path, match.params.id);
       const firstItem = Object.keys(response)[0];
       setDetails(response[firstItem][0]);
       const saveItem = {
-        '/meals/:id': () => setItem('Meal'),
-        '/drinks/:id': () => setItem('Drink'),
+        '/meals/:id': () => {
+          setItem('Meal');
+          setreverseItem('Drink');
+        },
+        '/drinks/:id': () => {
+          setItem('Drink');
+          setreverseItem('Meal');
+        },
       };
-      console.log(saveItem);
+
+      setStartBtt(getDoneRecipes().some((e) => e.id === match.params.id));
+
+      const inProgressKey = match.path === '/meals/:id' ? 'meals' : 'drinks';
+      const inProgressLocal = getInProgressRecipes();
+      setNameStartBtt(Object.keys(inProgressLocal[inProgressKey])
+        .includes(match.params.id));
+
+      const data = await recipeAPI[match.path]();
+      const key = Object.keys(data)[0];
+      setRecommended(data[key]);
+
       saveItem[match.path]();
       setIngredients(filterIngredients('strIngredient', response[firstItem][0]));
       setMeasure(filterIngredients('strMeasure', response[firstItem][0]));
@@ -40,13 +60,9 @@ function RecipeDetails({ match }) {
     request();
   }, []);
 
-  const buttonTest = () => {
-    if (pagePath === `/meals/${match.params.id}`) {
-      history.push(`/meals/${match.params.id}/in-progress`);
-    } else {
-      history.push(`/drinks/${match.params.id}/in-progress`);
-    }
-    console.log(pagePath);
+  const history = useHistory();
+  const redirect = () => {
+    history.push(`${match.url}/in-progress`);
   };
 
   return (
@@ -61,12 +77,9 @@ function RecipeDetails({ match }) {
           )
       }
       {
-        ingredients
-          .filter((ele) => ele !== '')
-
-          .map((e, i) => (
+        ingredients.map((e, i) => (
             <p
-              key={ e }
+              key={ i }
               data-testid={ `${i}-ingredient-name-and-measure` }
             >
               {`${e}: ${measure[i]}`}
@@ -92,9 +105,40 @@ function RecipeDetails({ match }) {
           data-testid="video"
         />
       }
-      <button onClick={ buttonTest } type="button">
-        Test
-      </button>
+      <Carousel>
+        {
+          recommended.filter((_, index) => index < NUMBER_OF_RECOMMENDATIONS)
+            .map((e, i) => (
+              <Carousel.Item
+                key={ i }
+                data-testid={ `${i}-recommendation-card` }
+              >
+                <img
+                  className="d-block w-100"
+                  src={ e[`str${reverseItem}Thumb`] }
+                  alt="First slide"
+                />
+                <Carousel.Caption data-testid={ `${i}-recommendation-title` }>
+                  <h3>{ e[`str${reverseItem}`] }</h3>
+                </Carousel.Caption>
+              </Carousel.Item>
+            ))
+        }
+      </Carousel>
+      {
+        !startBtt
+      && (
+        <button
+          type="button"
+          data-testid="start-recipe-btn"
+          className="button_start_recipe"
+          onClick={ redirect }
+        >
+          { !nameStartBtt ? 'Start Recipe' : 'Continue Recipe' }
+        </button>
+      )
+      }
+      <FavShareBar url={ match.url } />
     </div>
   );
 }
@@ -102,6 +146,7 @@ function RecipeDetails({ match }) {
 RecipeDetails.propTypes = {
   match: PropTypes.shape({
     path: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
     params: PropTypes.shape({
       id: PropTypes.string.isRequired,
     }).isRequired,
