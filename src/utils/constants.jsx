@@ -20,3 +20,8 @@ export const URL_SEARCH_API = 'https://www.themealdb.com/api/json/v1/1/search.ph
 
 export const DONE_RECIPES = 'doneRecipes';
 export const IN_PROGRESS = 'inProgressRecipes';
+
+export const ID_BUTTON_SEARCH = 'search-top-btn';
+export const ID_INPUT_SEARCH = 'search-input';
+export const ID_BUTTON_GET_SEARCH = 'exec-search-btn';
+export const ID_RADIO_NAME = 'exec-search-btn';
