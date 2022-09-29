@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { useHistory, useParams, useRouteMatch } from 'react-router-dom';
 import { recipeInProgressAPI } from '../utils/requestsAPI';
 import context from '../context/myContext';
+import FavShareBar from '../components/FavShareBar';
 
 function RecipeInProgress({ match }) {
   const { id } = useParams();
@@ -11,15 +12,14 @@ function RecipeInProgress({ match }) {
     addMeals,
     addDrinks,
     progressRecipe,
-    setProgressRecipe,
     removeMeals,
     removeDrinks,
-    // loading2,
-    // setLoading2,
+    ingredients,
+    setIngredients,
   } = useContext(context);
+
   const [item, setItem] = useState('');
   const [details, setDetails] = useState({});
-  const [ingredients, setIngredients] = useState([]);
   const [measure, setMeasure] = useState([]);
   const { path } = useRouteMatch();
   const [page, setPage] = useState('');
@@ -46,8 +46,6 @@ function RecipeInProgress({ match }) {
       setMeasure(filterIngredients('strMeasure', response[firstItem][0]));
     };
     request2();
-
-    setProgressRecipe(JSON.parse(localStorage.getItem('inProgressRecipes')) || []);
   }, []);
 
   useEffect(() => {
@@ -63,6 +61,11 @@ function RecipeInProgress({ match }) {
       return progressRecipe.meals[id]
         .some((itemm) => itemm === ingre);
     }
+
+    if (progressRecipe.drinks[id]) {
+      return progressRecipe.drinks[id]
+        .some((itemm) => itemm === ingre);
+    }
   };
 
   const filterIngredientes = ingredients.filter((ele) => ele !== '');
@@ -71,10 +74,14 @@ function RecipeInProgress({ match }) {
 
   const habilitarButton = () => {
     if (page === 'meal' && filterIngredientes.length
-    === numberItensStorageMeals.length) return setIsDisabled(false);
+    === numberItensStorageMeals.length) {
+      return setIsDisabled(false);
+    }
 
     if (page === 'drink' && filterIngredientes.length
-    === numberItensStorageDrinks.length) return setIsDisabled(false);
+    === numberItensStorageDrinks.length) {
+      return setIsDisabled(false);
+    }
     return setIsDisabled(true);
   };
 
@@ -99,7 +106,7 @@ function RecipeInProgress({ match }) {
     }
   };
 
-  console.log(page);
+  // console.log(page);
 
   const redirect = () => {
     history.push('/done-recipes');
@@ -117,6 +124,7 @@ function RecipeInProgress({ match }) {
           )
       }
       {
+
         ingredients
           .filter((ele) => ele !== '')
           .map((e, i) => (
@@ -142,8 +150,6 @@ function RecipeInProgress({ match }) {
           ))
       }
       <p data-testid="instructions">{ details.strInstructions }</p>
-      <button type="button" data-testid="share-btn">Share</button>
-      <button type="button" data-testid="favorite-btn">Favorite</button>
       <button
         type="button"
         data-testid="finish-recipe-btn"
@@ -153,6 +159,7 @@ function RecipeInProgress({ match }) {
         Finish
 
       </button>
+      <FavShareBar url={ match.url.replace('/in-progress', '') } />
     </div>
   );
 }
@@ -160,6 +167,7 @@ function RecipeInProgress({ match }) {
 RecipeInProgress.propTypes = {
   match: PropTypes.shape({
     path: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
     params: PropTypes.shape({
       id: PropTypes.string.isRequired,
     }).isRequired,

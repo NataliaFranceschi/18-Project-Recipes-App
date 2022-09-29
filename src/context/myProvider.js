@@ -18,6 +18,8 @@ function Provider({ children }) {
   const [categoryON, setCategoryON] = useState(false);
   const [searchON, setSearchON] = useState(false);
 
+  const [ingredients, setIngredients] = useState([]);
+
   const addDrinks = (id, ingredient) => {
     setProgressRecipe((prevProgress) => {
       const drinksPrevState = prevProgress.drinks[id] ? prevProgress.drinks[id] : [];
@@ -110,6 +112,8 @@ function Provider({ children }) {
     removeDrinks,
     loading2,
     setLoading2,
+    ingredients,
+    setIngredients,
 
     // dataInputLocalStorage,
     // setDataInputLocalStorage,
