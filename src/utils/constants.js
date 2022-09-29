@@ -25,3 +25,4 @@ export const ID_BUTTON_SEARCH = 'search-top-btn';
 export const ID_INPUT_SEARCH = 'search-input';
 export const ID_BUTTON_GET_SEARCH = 'exec-search-btn';
 export const ID_RADIO_NAME = 'exec-search-btn';
+export const FAV_RECIPES = 'favoriteRecipes';
