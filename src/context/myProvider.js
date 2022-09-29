@@ -13,6 +13,7 @@ function Provider({ children }) {
     meals: {},
   });
   const [loading, setLoading] = useState(false);
+  const [loading2, setLoading2] = useState(true);
   const [selectedRadioButton, setSelectedRadioButton] = useState('ingredientsRadio'); // estado do input de t
   const [categoryON, setCategoryON] = useState(false);
   const [searchON, setSearchON] = useState(false);
@@ -33,19 +34,6 @@ function Provider({ children }) {
     });
   };
 
-  const removeDrinks = (id, ingredient) => {
-    setProgressRecipe((prevProgress) => {
-      const drinksPrevState = prevProgress.drinks[id] ? prevProgress.drinks[id] : [];
-      return {
-        ...prevProgress,
-        drinks: {
-          ...prevProgress.drinks,
-          [id]: drinksPrevState.filter((item) => item !== ingredient),
-        },
-      };
-    });
-  };
-
   const addMeals = (id, ingredient) => {
     setProgressRecipe((prevProgress) => {
       const mealsPrevState = prevProgress.meals[id] ? prevProgress.meals[id] : [];
@@ -57,6 +45,19 @@ function Provider({ children }) {
             ...mealsPrevState,
             ingredient,
           ],
+        },
+      };
+    });
+  };
+
+  const removeDrinks = (id, ingredient) => {
+    setProgressRecipe((prevProgress) => {
+      const drinksPrevState = prevProgress.drinks[id] ? prevProgress.drinks[id] : [];
+      return {
+        ...prevProgress,
+        drinks: {
+          ...prevProgress.drinks,
+          [id]: drinksPrevState.filter((item) => item !== ingredient),
         },
       };
     });
@@ -107,6 +108,8 @@ function Provider({ children }) {
     setProgressRecipe,
     removeMeals,
     removeDrinks,
+    loading2,
+    setLoading2,
 
     // dataInputLocalStorage,
     // setDataInputLocalStorage,

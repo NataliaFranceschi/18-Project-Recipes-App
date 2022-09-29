@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
-import { useParams, useRouteMatch } from 'react-router-dom';
+import { useHistory, useParams, useRouteMatch } from 'react-router-dom';
 import { recipeInProgressAPI } from '../utils/requestsAPI';
 import context from '../context/myContext';
 
 function RecipeInProgress({ match }) {
   const { id } = useParams();
+  const history = useHistory();
   const {
     addMeals,
     addDrinks,
@@ -13,6 +14,8 @@ function RecipeInProgress({ match }) {
     setProgressRecipe,
     removeMeals,
     removeDrinks,
+    // loading2,
+    // setLoading2,
   } = useContext(context);
   const [item, setItem] = useState('');
   const [details, setDetails] = useState({});
@@ -20,6 +23,7 @@ function RecipeInProgress({ match }) {
   const [measure, setMeasure] = useState([]);
   const { path } = useRouteMatch();
   const [page, setPage] = useState('');
+  const [isDisabled, setIsDisabled] = useState(true);
 
   const filterIngredients = (key, response) => {
     const entriesIngredients = Object.entries(response).filter((e) => (
@@ -61,6 +65,23 @@ function RecipeInProgress({ match }) {
     }
   };
 
+  const filterIngredientes = ingredients.filter((ele) => ele !== '');
+  const numberItensStorageMeals = progressRecipe.meals[id] || [];
+  const numberItensStorageDrinks = progressRecipe.drinks[id] || [];
+
+  const habilitarButton = () => {
+    if (page === 'meal' && filterIngredientes.length
+    === numberItensStorageMeals.length) return setIsDisabled(false);
+
+    if (page === 'drink' && filterIngredientes.length
+    === numberItensStorageDrinks.length) return setIsDisabled(false);
+    return setIsDisabled(true);
+  };
+
+  useEffect(() => {
+    habilitarButton();
+  }, [progressRecipe]);
+
   const handleIngredientChecked = ({ target }) => {
     if (page === 'meal') {
       if (target.checked === true) {
@@ -76,6 +97,12 @@ function RecipeInProgress({ match }) {
         removeDrinks(id, target.value);
       }
     }
+  };
+
+  console.log(page);
+
+  const redirect = () => {
+    history.push('/done-recipes');
   };
 
   return (
@@ -117,7 +144,15 @@ function RecipeInProgress({ match }) {
       <p data-testid="instructions">{ details.strInstructions }</p>
       <button type="button" data-testid="share-btn">Share</button>
       <button type="button" data-testid="favorite-btn">Favorite</button>
-      <button type="button" data-testid="finish-recipe-btn">Finish</button>
+      <button
+        type="button"
+        data-testid="finish-recipe-btn"
+        disabled={ isDisabled }
+        onClick={ redirect }
+      >
+        Finish
+
+      </button>
     </div>
   );
 }
