@@ -31,7 +31,19 @@ function Provider({ children }) {
         },
       };
     });
-    console.log('Drinks');
+  };
+
+  const removeDrinks = (id, ingredient) => {
+    setProgressRecipe((prevProgress) => {
+      const drinksPrevState = prevProgress.drinks[id] ? prevProgress.drinks[id] : [];
+      return {
+        ...prevProgress,
+        drinks: {
+          ...prevProgress.drinks,
+          [id]: drinksPrevState.filter((item) => item !== ingredient),
+        },
+      };
+    });
   };
 
   const addMeals = (id, ingredient) => {
@@ -57,9 +69,7 @@ function Provider({ children }) {
         ...prevProgress,
         meals: {
           ...prevProgress.meals,
-          [id]: [
-            ...mealsPrevState,
-          ].splice(ingredient, 1),
+          [id]: mealsPrevState.filter((item) => item !== ingredient),
         },
       };
     });
@@ -96,6 +106,7 @@ function Provider({ children }) {
     progressRecipe,
     setProgressRecipe,
     removeMeals,
+    removeDrinks,
 
     // dataInputLocalStorage,
     // setDataInputLocalStorage,
