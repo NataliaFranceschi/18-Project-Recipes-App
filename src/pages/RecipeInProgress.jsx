@@ -159,7 +159,7 @@ function RecipeInProgress({ match }) {
         Finish
 
       </button>
-      <FavShareBar url={ match.url.replace('/in-progress', '') } />
+      <FavShareBar url={ match.url.replace('/in-progress', '') } recipe={ details } />
     </div>
   );
 }

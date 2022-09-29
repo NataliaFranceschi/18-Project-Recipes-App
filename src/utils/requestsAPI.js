@@ -32,6 +32,9 @@
 //   return data;
 // };
 
+import { Prev } from 'react-bootstrap/esm/PageItem';
+import { FAV_RECIPES } from './constants';
+
 export const apiRequest = async (radio, text, pagePath) => {
   if (pagePath === '/meals') {
     if (radio === 'ingredientsRadio') {
@@ -73,6 +76,30 @@ export const recipeDetailsAPI = {
     const response = await request.json();
     return response;
   },
+};
+
+export const saveFav = (newObj) => {
+  let oldInfo = JSON.parse(localStorage.getItem(FAV_RECIPES));
+  if (oldInfo === null) {
+    oldInfo = [];
+  }
+  if (oldInfo.some((e) => e.id === newObj.id)) {
+    const delet = oldInfo.filter((e) => e.id !== newObj.id);
+    localStorage.setItem(
+      FAV_RECIPES,
+      JSON.stringify(delet),
+    );
+  } else {
+    const newInfo = [
+      ...oldInfo,
+      newObj,
+    ];
+
+    localStorage.setItem(
+      FAV_RECIPES,
+      JSON.stringify(newInfo),
+    );
+  }
 };
 
 export const recipeInProgressAPI = {

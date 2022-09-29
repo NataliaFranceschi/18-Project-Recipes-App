@@ -144,7 +144,7 @@ function RecipeDetails({ match }) {
         </button>
       )
       }
-      <FavShareBar url={ match.url } />
+      <FavShareBar url={ match.url } recipe={ details } />
     </div>
   );
 }
