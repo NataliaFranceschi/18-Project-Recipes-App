@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useHistory } from 'react-router';
 import PropTypes from 'prop-types';
 import Carousel from 'react-bootstrap/Carousel';
@@ -6,12 +6,18 @@ import { recipeDetailsAPI, recipeAPI } from '../utils/requestsAPI';
 import '../style/details.css';
 import { getDoneRecipes, getInProgressRecipes } from '../utils/services';
 import FavShareBar from '../components/FavShareBar';
+import context from '../context/myContext';
 
 function RecipeDetails({ match }) {
+  const {
+    ingredients,
+    setIngredients,
+  } = useContext(context);
+
   const [item, setItem] = useState('');
   const [reverseItem, setreverseItem] = useState('');
   const [details, setDetails] = useState({});
-  const [ingredients, setIngredients] = useState([]);
+
   const [measure, setMeasure] = useState([]);
   const [recommended, setRecommended] = useState([]);
   const [startBtt, setStartBtt] = useState(true);

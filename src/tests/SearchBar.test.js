@@ -1,11 +1,9 @@
 import React from 'react';
 import userEvent from '@testing-library/user-event';
 import { screen, waitFor } from '@testing-library/react';
-import { wait } from '@testing-library/user-event/dist/utils';
 import App from '../App';
-
 import renderWithRouter from '../utils/renderWithRouter';
-import { testIds, VALID_EMAIL, VALID_PASSWORD } from '../utils/constants';
+import { ID_BUTTON_GET_SEARCH, ID_BUTTON_SEARCH, ID_INPUT_SEARCH, ID_RADIO_NAME, testIds, VALID_EMAIL, VALID_PASSWORD } from '../utils/constants';
 
 const MESSAGE = 'Your search must have only 1 (one) character';
 
@@ -27,11 +25,11 @@ describe('Testando componente SearchBar', () => {
     userEvent.click(buttao);
     await waitFor(() => expect(screen.getByText('Meals')).toBeInTheDocument(), { timeout: 3000 });
 
-    const searchButton = screen.getByTestId('search-top-btn');
+    const searchButton = screen.getByTestId(ID_BUTTON_SEARCH);
     userEvent.click(searchButton);
 
-    const searchInput = screen.getByTestId('exec-search-btn');
-    const searchTypeButton = screen.getByTestId('search-input');
+    const searchInput = screen.getByTestId(ID_BUTTON_GET_SEARCH);
+    const searchTypeButton = screen.getByTestId(ID_INPUT_SEARCH);
     expect(searchInput).toBeInTheDocument();
     expect(searchTypeButton).toBeInTheDocument();
   });
@@ -39,21 +37,11 @@ describe('Testando componente SearchBar', () => {
   it('Se é possivel pesquisar receitas de comida', async () => {
     renderWithRouter(<App />);
 
-    // const email = screen.getByTestId(testIds.emailInput);
-    // const buttao = screen.getByTestId(testIds.loginSubmitButton);
-    // const password = screen.getByTestId(testIds.passwordInput);
-    // expect(buttao).toBeDisabled();
-    // userEvent.type(email, VALID_EMAIL);
-    // userEvent.type(password, VALID_PASSWORD);
-    // expect(email).toHaveValue(VALID_EMAIL);
-    // expect(password).toHaveValue(VALID_PASSWORD);
-    // userEvent.click(buttao);
-    // await waitFor(() => expect(screen.getByText('Meals')).toBeInTheDocument(), { timeout: 3000 });
-    const searchButton = screen.getByTestId('search-top-btn');
+    const searchButton = screen.getByTestId(ID_BUTTON_SEARCH);
     userEvent.click(searchButton);
 
-    const searchInput = screen.getByTestId('exec-search-btn');
-    const searchTypeButton = screen.getByTestId('search-input');
+    const searchInput = screen.getByTestId(ID_BUTTON_GET_SEARCH);
+    const searchTypeButton = screen.getByTestId(ID_INPUT_SEARCH);
     const ingredientRadioButton = screen.getByTestId('ingredient-search-radio');
     userEvent.type(searchInput);
     userEvent.click(ingredientRadioButton);
@@ -65,9 +53,9 @@ describe('Testando componente SearchBar', () => {
     const searchButton = screen.getByTestId('search-top-btn');
     userEvent.click(searchButton);
 
-    const searchInput = screen.getByTestId('search-input');
-    const searchType = screen.getByTestId('exec-search-btn');
-    const ingredientRadio = screen.getByTestId('name-search-radio');
+    const searchInput = screen.getByTestId(ID_BUTTON_SEARCH);
+    const searchType = screen.getByTestId(ID_BUTTON_GET_SEARCH);
+    const ingredientRadio = screen.getByTestId(ID_RADIO_NAME);
     userEvent.type(searchInput, 'Arrabiata');
     userEvent.click(ingredientRadio);
     userEvent.click(searchType);
