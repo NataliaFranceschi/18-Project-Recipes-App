@@ -32,7 +32,7 @@
 //   return data;
 // };
 
-import { FAV_RECIPES } from './constants';
+import { FAV_RECIPES, DONE_RECIPES } from './constants';
 
 export const apiRequest = async (radio, text, pagePath) => {
   if (pagePath === '/meals') {
@@ -96,6 +96,30 @@ export const saveFav = (newObj) => {
 
     localStorage.setItem(
       FAV_RECIPES,
+      JSON.stringify(newInfo),
+    );
+  }
+};
+
+export const saveDone = (newObj) => {
+  let oldInfo = JSON.parse(localStorage.getItem(DONE_RECIPES));
+  if (oldInfo === null) {
+    oldInfo = [];
+  }
+  if (oldInfo.some((e) => e.id === newObj.id)) {
+    const delet = oldInfo.filter((e) => e.id !== newObj.id);
+    localStorage.setItem(
+      DONE_RECIPES,
+      JSON.stringify(delet),
+    );
+  } else {
+    const newInfo = [
+      ...oldInfo,
+      newObj,
+    ];
+
+    localStorage.setItem(
+      DONE_RECIPES,
       JSON.stringify(newInfo),
     );
   }

@@ -32,11 +32,9 @@ function FavoriteRecipes({ match }) {
 
     navigator.clipboard.writeText(`http://localhost:3000/${typeRecipe}s/${idRecipe}`);
     setAlertCopy(true);
-    // console.log(e.target.parentElement.previousElementSibling.attributes[1].value);
-    // console.log(filterLocal[0].type);
   };
 
-  const handleteste = (e) => {
+  const deletFavorite = (e) => {
     favorite.filter((fav) => fav.id !== e.target.parentNode.id);
     const delet = favorite.filter((ele) => ele.id !== e.target.parentNode.id);
     localStorage.setItem(
@@ -44,7 +42,6 @@ function FavoriteRecipes({ match }) {
       JSON.stringify(delet),
     );
     setUpdate(false);
-    // console.log(e.nativeEvent.path[1].id);
   };
 
   const handleFilter = ({ target: { id } }) => {
@@ -111,7 +108,7 @@ function FavoriteRecipes({ match }) {
                 <button
                   type="button"
                   id={ e.id }
-                  onClick={ handleteste }
+                  onClick={ deletFavorite }
                   data-testid={ `${i}-horizontal-favorite-btn` }
                   src={ blackHeartIcon }
                 >
@@ -130,11 +127,6 @@ function FavoriteRecipes({ match }) {
                   alertCopy
                     && <p>Link copied!</p>
                 }
-                {/* <FavShareBar
-                  url={ `/${e.type}s/${e.id}` }
-                  recipe={ { id: e.id } }
-                  delet
-                /> */}
               </div>
             );
           }

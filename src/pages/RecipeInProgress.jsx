@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { useHistory, useParams, useRouteMatch } from 'react-router-dom';
-import { recipeInProgressAPI } from '../utils/requestsAPI';
+import { recipeInProgressAPI, saveDone } from '../utils/requestsAPI';
 import context from '../context/myContext';
 import FavShareBar from '../components/FavShareBar';
 
@@ -107,7 +107,36 @@ function RecipeInProgress({ match }) {
 
   // console.log(page);
 
-  const redirect = () => {
+  const finishRecipe = () => {
+    const myDate = new Date(Date.now()).toLocaleString().split(',')[0];
+    const myTags = details.strTags.split(',');
+    if (match.url.includes('meals')) {
+      const objFav = {
+        id: details.idMeal,
+        type: 'meal',
+        nationality: details.strArea,
+        category: details.strCategory,
+        alcoholicOrNot: '',
+        name: details.strMeal,
+        image: details.strMealThumb,
+        doneDate: myDate,
+        tags: myTags,
+      };
+      saveDone(objFav);
+    } else {
+      const objFav = {
+        id: details.idDrink,
+        type: 'drink',
+        nationality: '',
+        category: details.strCategory,
+        alcoholicOrNot: details.strAlcoholic,
+        name: details.strDrink,
+        image: details.strDrinkThumb,
+        doneDate: myDate,
+        tags: [],
+      };
+      saveDone(objFav);
+    }
     history.push('/done-recipes');
   };
 
@@ -153,7 +182,7 @@ function RecipeInProgress({ match }) {
         type="button"
         data-testid="finish-recipe-btn"
         disabled={ isDisabled }
-        onClick={ redirect }
+        onClick={ finishRecipe }
       >
         Finish
 
