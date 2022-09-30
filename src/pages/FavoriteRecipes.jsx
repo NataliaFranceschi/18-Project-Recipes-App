@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Header from '../components/Header';
 import { FAV_RECIPES } from '../utils/constants';
@@ -8,6 +9,7 @@ import shareIcon from '../images/shareIcon.svg';
 
 function FavoriteRecipes({ match }) {
   const [favorite, setFavorites] = useState([]);
+  const [renderFav, setRenderFav] = useState([]);
   const [update, setUpdate] = useState(true);
   const [alertCopy, setAlertCopy] = useState(false);
 
@@ -18,6 +20,7 @@ function FavoriteRecipes({ match }) {
     }
 
     setFavorites(getFavorites);
+    setRenderFav(getFavorites);
     setUpdate(true);
     console.log(alertCopy);
   }, [update]);
@@ -44,40 +47,59 @@ function FavoriteRecipes({ match }) {
     // console.log(e.nativeEvent.path[1].id);
   };
 
+  const handleFilter = ({ target: { id } }) => {
+    if (id !== 'all') {
+      setRenderFav(favorite.filter((e) => e.type === id));
+    } else {
+      setRenderFav(favorite);
+    }
+  };
+
   return (
     <div>
       <Header name={ match.path } />
       <button
         type="button"
         data-testid="filter-by-all-btn"
+        id="all"
+        onClick={ handleFilter }
       >
         All
       </button>
       <button
         type="button"
         data-testid="filter-by-meal-btn"
+        id="meal"
+        onClick={ handleFilter }
       >
         Meals
       </button>
       <button
         type="button"
         data-testid="filter-by-drink-btn"
+        id="drink"
+        onClick={ handleFilter }
       >
         Drinks
       </button>
       {
-        favorite.map((e, i) => {
+        renderFav.map((e, i) => {
           if (e.type === 'meal') {
             return (
               <div key={ e.id }>
-                <img
-                  src={ e.image }
-                  alt={ e.name }
-                  data-testid={ `${i}-horizontal-image` }
-                />
-                <p data-testid={ `${i}-horizontal-name` }>
-                  { e.name }
-                </p>
+                <Link to={ `meals/${e.id}` }>
+                  <img
+                    src={ e.image }
+                    alt={ e.name }
+                    data-testid={ `${i}-horizontal-image` }
+                    width="200"
+                  />
+                </Link>
+                <Link to={ `meals/${e.id}` }>
+                  <p data-testid={ `${i}-horizontal-name` }>
+                    { e.name }
+                  </p>
+                </Link>
                 <p data-testid={ `${i}-horizontal-top-text` }>
                   { e.nationality }
                   {' '}
@@ -118,14 +140,19 @@ function FavoriteRecipes({ match }) {
           }
           return (
             <div key={ e.id }>
-              <img
-                src={ e.image }
-                alt={ e.name }
-                data-testid={ `${i}-horizontal-image` }
-              />
-              <p data-testid={ `${i}-horizontal-name` }>
-                { e.name }
-              </p>
+              <Link to={ `drinks/${e.id}` }>
+                <img
+                  src={ e.image }
+                  alt={ e.name }
+                  data-testid={ `${i}-horizontal-image` }
+                  width="200"
+                />
+              </Link>
+              <Link to={ `drinks/${e.id}` }>
+                <p data-testid={ `${i}-horizontal-name` }>
+                  { e.name }
+                </p>
+              </Link>
               <p data-testid={ `${i}-horizontal-top-text` }>
                 { e.alcoholicOrNot }
               </p>
