@@ -2,10 +2,14 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import Header from '../components/Header';
 import { FAV_RECIPES } from '../utils/constants';
-import FavShareBar from '../components/FavShareBar';
+// import FavShareBar from '../components/FavShareBar';
+import blackHeartIcon from '../images/blackHeartIcon.svg';
+import shareIcon from '../images/shareIcon.svg';
 
 function FavoriteRecipes({ match }) {
   const [favorite, setFavorites] = useState([]);
+  const [update, setUpdate] = useState(true);
+  const [alertCopy, setAlertCopy] = useState(false);
 
   useEffect(() => {
     let getFavorites = JSON.parse(localStorage.getItem(FAV_RECIPES));
@@ -14,7 +18,31 @@ function FavoriteRecipes({ match }) {
     }
 
     setFavorites(getFavorites);
-  }, []);
+    setUpdate(true);
+    console.log(alertCopy);
+  }, [update]);
+
+  const copyBoard = (e) => {
+    const idRecipe = e.target.parentElement.previousElementSibling.attributes[1].value;
+    const filterLocal = favorite.filter((fav) => fav.id === idRecipe);
+    const typeRecipe = filterLocal[0].type;
+
+    navigator.clipboard.writeText(`http://localhost:3000/${typeRecipe}s/${idRecipe}`);
+    setAlertCopy(true);
+    // console.log(e.target.parentElement.previousElementSibling.attributes[1].value);
+    // console.log(filterLocal[0].type);
+  };
+
+  const handleteste = (e) => {
+    favorite.filter((fav) => fav.id !== e.target.parentNode.id);
+    const delet = favorite.filter((ele) => ele.id !== e.target.parentNode.id);
+    localStorage.setItem(
+      FAV_RECIPES,
+      JSON.stringify(delet),
+    );
+    setUpdate(false);
+    // console.log(e.nativeEvent.path[1].id);
+  };
 
   return (
     <div>
@@ -51,14 +79,40 @@ function FavoriteRecipes({ match }) {
                   { e.name }
                 </p>
                 <p data-testid={ `${i}-horizontal-top-text` }>
+                  { e.nationality }
+                  {' '}
+                  -
+                  {' '}
                   { e.category }
                 </p>
-                <p>{ e.nationality }</p>
-                <FavShareBar
+
+                <button
+                  type="button"
+                  id={ e.id }
+                  onClick={ handleteste }
+                  data-testid={ `${i}-horizontal-favorite-btn` }
+                  src={ blackHeartIcon }
+                >
+                  <img src={ blackHeartIcon } alt="" />
+                </button>
+                <button
+                  type="button"
+                  data-testid={ `${i}-horizontal-share-btn` }
+                  className="button"
+                  src={ shareIcon }
+                  onClick={ copyBoard }
+                >
+                  <img src={ shareIcon } alt="shareIcon" />
+                </button>
+                {
+                  alertCopy
+                    && <p>Link copied!</p>
+                }
+                {/* <FavShareBar
                   url={ `/${e.type}s/${e.id}` }
                   recipe={ { id: e.id } }
                   delet
-                />
+                /> */}
               </div>
             );
           }
@@ -72,12 +126,31 @@ function FavoriteRecipes({ match }) {
               <p data-testid={ `${i}-horizontal-name` }>
                 { e.name }
               </p>
-              <p>{ e.alcoholicOrNot }</p>
-              <FavShareBar
-                url={ `/${e.type}s/${e.id}` }
-                recipe={ { id: e.id } }
-                delet
-              />
+              <p data-testid={ `${i}-horizontal-top-text` }>
+                { e.alcoholicOrNot }
+              </p>
+              <button
+                type="button"
+                id={ e.id }
+                onClick={ handleteste }
+                data-testid={ `${i}-horizontal-favorite-btn` }
+                src={ blackHeartIcon }
+              >
+                <img src={ blackHeartIcon } alt="" />
+              </button>
+              <button
+                type="button"
+                data-testid={ `${i}-horizontal-share-btn` }
+                className="button"
+                src={ shareIcon }
+                onClick={ copyBoard }
+              >
+                <img src={ shareIcon } alt="shareIcon" />
+              </button>
+              {
+                alertCopy
+                    && <p>Link copied!</p>
+              }
             </div>
           );
         })
