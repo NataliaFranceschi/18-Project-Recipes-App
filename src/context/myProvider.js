@@ -17,7 +17,7 @@ function Provider({ children }) {
   const [selectedRadioButton, setSelectedRadioButton] = useState('ingredientsRadio'); // estado do input de t
   const [categoryON, setCategoryON] = useState(false);
   const [searchON, setSearchON] = useState(false);
-
+  const [idDoneRecipes, setIdDoneRecipes] = useState({});
   const [ingredients, setIngredients] = useState([]);
 
   const addDrinks = (id, ingredient) => {
@@ -114,6 +114,8 @@ function Provider({ children }) {
     setLoading2,
     ingredients,
     setIngredients,
+    idDoneRecipes,
+    setIdDoneRecipes,
 
     // dataInputLocalStorage,
     // setDataInputLocalStorage,

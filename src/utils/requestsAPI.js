@@ -32,7 +32,7 @@
 //   return data;
 // };
 
-import { Prev } from 'react-bootstrap/esm/PageItem';
+// import { Prev } from 'react-bootstrap/esm/PageItem';
 import { FAV_RECIPES } from './constants';
 
 export const apiRequest = async (radio, text, pagePath) => {
