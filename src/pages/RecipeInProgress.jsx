@@ -17,7 +17,6 @@ function RecipeInProgress({ match }) {
     ingredients,
     setIngredients,
   } = useContext(context);
-
   const [item, setItem] = useState('');
   const [details, setDetails] = useState({});
   const [measure, setMeasure] = useState([]);

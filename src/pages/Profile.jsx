@@ -2,11 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import ProfileComponent from '../components/ProfileComponent';
 
 function Profile({ match }) {
   return (
     <div>
       <Header name={ match.path } />
+      <ProfileComponent />
       <Footer />
     </div>
   );
