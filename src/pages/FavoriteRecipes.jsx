@@ -151,7 +151,7 @@ function FavoriteRecipes({ match }) {
               <button
                 type="button"
                 id={ e.id }
-                onClick={ handleteste }
+                onClick={ deletFavorite }
                 data-testid={ `${i}-horizontal-favorite-btn` }
                 src={ blackHeartIcon }
               >

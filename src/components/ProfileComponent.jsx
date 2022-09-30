@@ -2,10 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 function ProfileComponent() {
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState({});
   useEffect(() => {
     const emailLocalStorage = localStorage.getItem('user');
-    setEmail(JSON.parse(emailLocalStorage));
+    if (emailLocalStorage === null || emailLocalStorage === undefined) {
+      setEmail({ email: '' });
+    } else {
+      setEmail(JSON.parse(emailLocalStorage));
+    }
   }, []);
 
   const clearLocalStorage = () => {
