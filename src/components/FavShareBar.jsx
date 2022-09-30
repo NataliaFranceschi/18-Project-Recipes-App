@@ -6,7 +6,7 @@ import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
 import { FAV_RECIPES } from '../utils/constants';
 
-function FavShareBar({ url, recipe }) {
+function FavShareBar({ url, recipe, delet }) {
   const [alertCopy, setAlertCopy] = useState(false);
   const [saved, setSaved] = useState(false);
 
@@ -25,8 +25,9 @@ function FavShareBar({ url, recipe }) {
   };
 
   const saveFavorite = () => {
-    if (url.includes('meals')) {
-      console.log(url);
+    if (delet === true) {
+      saveFav(recipe);
+    } else if (url.includes('meals')) {
       const objFav = {
         id: recipe.idMeal,
         type: 'meal',
@@ -38,7 +39,6 @@ function FavShareBar({ url, recipe }) {
       };
       saveFav(objFav);
     } else {
-      console.log(url);
       const objFav = {
         id: recipe.idDrink,
         type: 'drink',
@@ -93,6 +93,7 @@ function FavShareBar({ url, recipe }) {
 FavShareBar.propTypes = {
   url: PropTypes.string.isRequired,
   recipe: PropTypes.objectOf(PropTypes.string).isRequired,
+  delet: PropTypes.bool.isRequired,
 };
 
 export default FavShareBar;
