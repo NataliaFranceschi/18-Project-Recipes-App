@@ -109,7 +109,7 @@ function RecipeInProgress({ match }) {
 
   const finishRecipe = () => {
     const myDate = new Date(Date.now()).toLocaleString().split(',')[0];
-    const myTags = details.strTags.split(',');
+    // const myTags = details.strTags.split(',');
     if (match.url.includes('meals')) {
       const objFav = {
         id: details.idMeal,
@@ -120,7 +120,7 @@ function RecipeInProgress({ match }) {
         name: details.strMeal,
         image: details.strMealThumb,
         doneDate: myDate,
-        tags: myTags,
+        tags: details.strTags.split(','),
       };
       saveDone(objFav);
     } else {
