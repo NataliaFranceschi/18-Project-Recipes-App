@@ -1,9 +1,9 @@
 .Footer {
+  background-color: #15312c;
   bottom: 0;
-  position: fixed;
   display: flex;
   justify-content: space-between;
-  background-color: #15312C;
-  width: 100vw;
   padding: 10px;
+  position: fixed;
+  width: 100vw;
 }
