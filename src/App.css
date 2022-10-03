@@ -66,3 +66,8 @@
     transform: rotate(-10deg);
   }
 }
+
+.root_container {
+  height: 640px;
+  width: 100%;
+}
