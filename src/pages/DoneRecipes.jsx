@@ -4,6 +4,10 @@ import PropTypes from 'prop-types';
 import Header from '../components/Header';
 import { DONE_RECIPES } from '../utils/constants';
 import shareIcon from '../images/shareIcon.svg';
+import all from '../images/all.svg';
+// import meals from '../images/mealIcon.svg';
+// import drinks from '../images/drinkIcon.svg';
+import '../style/doneFavorite.css';
 
 function DoneRecipes({ match }) {
   const [dones, setDones] = useState([]);
@@ -39,14 +43,15 @@ function DoneRecipes({ match }) {
     <div>
       <Header name={ match.path } />
       <div>
-        <button
+        <img
           type="button"
           data-testid="filter-by-all-btn"
           id="all"
+          src={ all }
           onClick={ handleFilter }
-        >
-          All
-        </button>
+          role="presentation"
+          alt="all"
+        />
         <button
           type="button"
           data-testid="filter-by-meal-btn"
@@ -67,51 +72,54 @@ function DoneRecipes({ match }) {
           renderDones.map((e, i) => {
             if (e.type === 'meal') {
               return (
-                <div key={ e.id }>
+                <div key={ e.id } className="cardRecipe">
                   <Link to={ `meals/${e.id}` }>
                     <img
                       src={ e.image }
                       alt={ e.name }
                       data-testid={ `${i}-horizontal-image` }
-                      width="200"
+                      width="150"
                     />
                   </Link>
-                  <Link to={ `meals/${e.id}` }>
-                    <p data-testid={ `${i}-horizontal-name` }>
-                      { e.name }
+                  <div>
+                    <Link to={ `meals/${e.id}` }>
+                      <p data-testid={ `${i}-horizontal-name` }>
+                        { e.name }
+                      </p>
+                    </Link>
+                    <p data-testid={ `${i}-horizontal-top-text` }>
+                      { e.nationality }
+                      {' '}
+                      -
+                      {' '}
+                      { e.category }
                     </p>
-                  </Link>
-                  <p data-testid={ `${i}-horizontal-top-text` }>
-                    { e.nationality }
-                    {' '}
-                    -
-                    {' '}
-                    { e.category }
-                  </p>
-                  <p data-testid={ `${i}-horizontal-done-date` }>
-                    { e.doneDate }
-                  </p>
-                  { e.tags.filter((_, index) => (index < 2)).map((tag) => (
-                    <span
-                      key={ tag }
-                      data-testid={ `${i}-${tag}-horizontal-tag` }
+                    <p data-testid={ `${i}-horizontal-done-date` }>
+                      { e.doneDate }
+                    </p>
+                    { e.tags.filter((_, index) => (index < 2)).map((tag) => (
+                      <span
+                        key={ tag }
+                        data-testid={ `${i}-${tag}-horizontal-tag` }
+                      >
+                        { tag }
+                      </span>
+                    )) }
+                    <button
+                      type="button"
+                      data-testid={ `${i}-horizontal-share-btn` }
+                      className="button"
+                      src={ shareIcon }
+                      onClick={ copyBoard }
                     >
-                      { tag }
-                    </span>
-                  )) }
-                  <button
-                    type="button"
-                    data-testid={ `${i}-horizontal-share-btn` }
-                    className="button"
-                    src={ shareIcon }
-                    onClick={ copyBoard }
-                  >
-                    <img id={ `/meals/${e.id}` } src={ shareIcon } alt="shareIcon" />
-                  </button>
-                  {
-                    alertCopy
+                      <img id={ `/meals/${e.id}` } src={ shareIcon } alt="shareIcon" />
+                    </button>
+                    {
+                      alertCopy
                     && <p>Link copied!</p>
-                  }
+                    }
+                  </div>
+
                 </div>
               );
             }
@@ -122,7 +130,7 @@ function DoneRecipes({ match }) {
                     src={ e.image }
                     alt={ e.name }
                     data-testid={ `${i}-horizontal-image` }
-                    width="200"
+                    width="150"
                   />
                 </Link>
                 <Link to={ `drinks/${e.id}` }>

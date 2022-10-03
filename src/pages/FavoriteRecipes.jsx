@@ -3,9 +3,12 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Header from '../components/Header';
 import { FAV_RECIPES } from '../utils/constants';
-// import FavShareBar from '../components/FavShareBar';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
 import shareIcon from '../images/shareIcon.svg';
+import all from '../images/all.svg';
+// import meals from '../images/mealIcon.svg';
+// import drinks from '../images/drinkIcon.svg';
+import '../style/doneFavorite.css';
 
 function FavoriteRecipes({ match }) {
   const [favorite, setFavorites] = useState([]);
@@ -59,9 +62,10 @@ function FavoriteRecipes({ match }) {
         type="button"
         data-testid="filter-by-all-btn"
         id="all"
+        src={ all }
         onClick={ handleFilter }
       >
-        All
+        <img src={ all } alt="all" />
       </button>
       <button
         type="button"
