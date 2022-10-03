@@ -1,0 +1,37 @@
+.profile {
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    text-align: center;
+}
+
+.profileOption {
+    margin-right: 50px;
+    margin-left: 50px;
+    padding: 20px;
+    border-bottom: 1px solid #B1B1B1;
+    display: flex;
+    align-items: center;
+}
+
+.profileButton{
+    margin-right:10px;
+    color: #858484;;
+    display: flex;
+    background-color: white;
+    border: none;
+    align-items: center;
+}
+
+.profileButton .icon{
+    border-radius: 100%;
+    margin-right: 20px;
+    width: 45px;
+    height: auto;
+    border: 2px solid #FCC436;
+}
+
+.profileButton .icon img{
+    width: 25px;
+    height: 40px;
+}
