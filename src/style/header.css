@@ -1,0 +1,29 @@
+.header{
+    display: flex;
+    justify-content: flex-end;
+    background-color:  #FCC436;
+    padding: 10px;
+}
+
+.headerButton {
+    background-color:  #FCC436;
+    margin-right: 5px;
+    border:none;
+}
+
+.title {
+    width: 100vw;
+    text-align: center;
+    color: #15312C;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.title h1 {
+    font-size: 2em;
+}
+
+.title img {
+    height: 40px;
+    width: auto;
+}
