@@ -1,53 +1,53 @@
-.recipes{
-    margin-bottom: 60px;
+.recipes {
+  margin-bottom: 60px;
 }
 
 .categories {
-    display: flex;
-    justify-content: space-evenly;
-    font-size: 0.7em;
-    color: #B1B1B1;
+  color: #b1b1b1;
+  display: flex;
+  font-size: 0.7em;
+  justify-content: space-evenly;
 }
 
-.category{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 15%;
-    text-align: center;
+.category {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  width: 15%;
 }
 
-.categoryButton{
-    display: flex;
-    flex-direction: column;
-    border-radius: 100%;
-    border: 2px solid #FCC436;
-    background-color: white;
-    align-items: center;
-    justify-content: center;
+.categoryButton {
+  align-items: center;
+  background-color: white;
+  border: 2px solid #fcc436;
+  border-radius: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
-.icon{
-    width: 30px;
-    height: 40px;
+.icon {
+  height: 40px;
+  width: 30px;
 }
 
 .cards {
-    display: flex;
-    flex-wrap: wrap;
-    width: 100vw;
-    justify-content: space-evenly;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  width: 100vw;
 }
 
 .card {
-    display: flex;
-    flex-direction: column;
-    width: 150px;
-    margin: 10px;
-    text-align: center;
+  display: flex;
+  flex-direction: column;
+  margin: 10px;
+  text-align: center;
+  width: 150px;
 }
 
-a{
-    text-decoration: none;
-    color: #858484;
+a {
+  color: #858484;
+  text-decoration: none;
 }

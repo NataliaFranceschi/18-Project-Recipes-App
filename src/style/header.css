@@ -1,29 +1,30 @@
-.header{
-    display: flex;
-    justify-content: flex-end;
-    background-color:  #FCC436;
-    padding: 10px;
+.header {
+  background-color: #fcc436;
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px;
 }
 
 .headerButton {
-    background-color:  #FCC436;
-    margin-right: 5px;
-    border:none;
+  background-color: #fcc436;
+  border: none;
+  margin-right: 5px;
 }
 
 .title {
-    width: 100vw;
-    text-align: center;
-    color: #15312C;
-    margin-top: 20px;
-    margin-bottom: 20px;
+  color: #15312c;
+  margin-bottom: 20px;
+  margin-top: 20px;
+  text-align: center;
+  width: 100vw;
 }
 
+
 .title h1 {
-    font-size: 2em;
+  font-size: 2em;
 }
 
 .title img {
-    height: 40px;
-    width: auto;
+  height: 40px;
+  width: auto;
 }

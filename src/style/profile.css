@@ -1,37 +1,37 @@
 .profile {
-    display: flex;
-    flex-direction: column;
-    width: 100vw;
-    text-align: center;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  width: 100vw;
 }
 
 .profileOption {
-    margin-right: 50px;
-    margin-left: 50px;
-    padding: 20px;
-    border-bottom: 1px solid #B1B1B1;
-    display: flex;
-    align-items: center;
+  align-items: center;
+  border-bottom: 1px solid #b1b1b1;
+  display: flex;
+  margin-left: 50px;
+  margin-right: 50px;
+  padding: 20px;
 }
 
-.profileButton{
-    margin-right:10px;
-    color: #858484;;
-    display: flex;
-    background-color: white;
-    border: none;
-    align-items: center;
+.profileButton {
+  align-items: center;
+  background-color: white;
+  border: none;
+  color: #858484;
+  display: flex;
+  margin-right: 10px;
 }
 
-.profileButton .icon{
-    border-radius: 100%;
-    margin-right: 20px;
-    width: 45px;
-    height: auto;
-    border: 2px solid #FCC436;
+.profileButton .icon {
+  border: 2px solid #fcc436;
+  border-radius: 100%;
+  height: auto;
+  margin-right: 20px;
+  width: 45px;
 }
 
-.profileButton .icon img{
-    width: 25px;
-    height: 40px;
+.profileButton .icon img {
+  height: 40px;
+  width: 25px;
 }
