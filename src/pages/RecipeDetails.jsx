@@ -48,7 +48,6 @@ function RecipeDetails({ match }) {
         },
       };
       setStartBtt(getDoneRecipes().some((e) => e.id === match.params.id));
-      console.log(getDoneRecipes());
 
       const inProgressKey = match.path === '/meals/:id' ? 'meals' : 'drinks';
       const inProgressLocal = getInProgressRecipes();

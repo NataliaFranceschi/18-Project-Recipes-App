@@ -16,8 +16,10 @@ function FavShareBar({ url, recipe, delet }) {
       localSavedInfos = [];
     }
     const keyObj = url.includes('meals') ? 'Meal' : 'Drink';
-    setSaved(localSavedInfos.some((e) => e[`id${keyObj}`] === recipe[`id${keyObj}`]));
-  }, []);
+    const validation = localSavedInfos.some((e) => (
+      e.id === recipe[`id${keyObj}`]));
+    setSaved(validation);
+  }, [recipe]);
 
   const copyBoard = () => {
     navigator.clipboard.writeText(`http://localhost:3000${url}`);
@@ -93,7 +95,12 @@ function FavShareBar({ url, recipe, delet }) {
 FavShareBar.propTypes = {
   url: PropTypes.string.isRequired,
   recipe: PropTypes.objectOf(PropTypes.string).isRequired,
-  delet: PropTypes.bool.isRequired,
+  delet: PropTypes.bool,
+
+};
+
+FavShareBar.defaultProps = {
+  delet: false,
 };
 
 export default FavShareBar;
