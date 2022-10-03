@@ -7,15 +7,19 @@ import SearchBar from './SearchBar';
 import '../style/header.css';
 import mealIcon from '../images/mealIcon.svg';
 import drinkIcon from '../images/drinkIcon.svg';
+import profile from '../images/profile.svg';
+import done from '../images/done.svg';
+import favorite from '../images/blackHeartIcon.svg';
 
 function Header({ name }) {
   const [showElement, setShowElement] = useState(false);
   const validationHeader = {
     '/meals': ['Meals', { perfil: true }, { pesquisa: true }, mealIcon],
     '/drinks': ['Drinks', { perfil: true }, { pesquisa: true }, drinkIcon],
-    '/profile': ['Profile', { perfil: true }, { pesquisa: false }],
-    '/done-recipes': ['Done Recipes', { perfil: true }, { pesquisa: false }],
-    '/favorite-recipes': ['Favorite Recipes', { perfil: true }, { pesquisa: false }],
+    '/profile': ['Profile', { perfil: true }, { pesquisa: false }, profile],
+    '/done-recipes': ['Done Recipes', { perfil: true }, { pesquisa: false }, done],
+    '/favorite-recipes': ['Favorite Recipes', { perfil: true }, { pesquisa: false },
+      favorite],
   };
   const history = useHistory();
   const redirect = () => {
