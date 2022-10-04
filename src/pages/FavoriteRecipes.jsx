@@ -25,21 +25,21 @@ function FavoriteRecipes({ match }) {
     setFavorites(getFavorites);
     setRenderFav(getFavorites);
     setUpdate(true);
-    console.log(alertCopy);
   }, [update]);
 
-  const copyBoard = (e) => {
-    const idRecipe = e.target.parentElement.previousElementSibling.attributes[1].value;
+  const copyBoard = (id) => {
+    setAlertCopy(true);
+    const idRecipe = id;
     const filterLocal = favorite.filter((fav) => fav.id === idRecipe);
     const typeRecipe = filterLocal[0].type;
 
     navigator.clipboard.writeText(`http://localhost:3000/${typeRecipe}s/${idRecipe}`);
-    setAlertCopy(true);
   };
 
-  const deletFavorite = (e) => {
-    favorite.filter((fav) => fav.id !== e.target.parentNode.id);
-    const delet = favorite.filter((ele) => ele.id !== e.target.parentNode.id);
+  const deletFavorite = (id) => {
+    console.log(id);
+    favorite.filter((fav) => fav.id !== id);
+    const delet = favorite.filter((ele) => ele.id !== id);
     localStorage.setItem(
       FAV_RECIPES,
       JSON.stringify(delet),
@@ -133,9 +133,8 @@ function FavoriteRecipes({ match }) {
                   </p>
                   <button
                     type="button"
-                    id={ e.id }
                     className="icons"
-                    onClick={ deletFavorite }
+                    onClick={ () => deletFavorite(e.id) }
                     data-testid={ `${i}-horizontal-favorite-btn` }
                     src={ blackHeartIcon }
                   >
@@ -146,7 +145,7 @@ function FavoriteRecipes({ match }) {
                     data-testid={ `${i}-horizontal-share-btn` }
                     className="button icons"
                     src={ shareIcon }
-                    onClick={ copyBoard }
+                    onClick={ () => copyBoard(e.id) }
                   >
                     <img src={ shareIcon } alt="shareIcon" />
                   </button>
@@ -179,8 +178,7 @@ function FavoriteRecipes({ match }) {
                 </p>
                 <button
                   type="button"
-                  id={ e.id }
-                  onClick={ deletFavorite }
+                  onClick={ () => deletFavorite(e.id) }
                   className="icons"
                   data-testid={ `${i}-horizontal-favorite-btn` }
                   src={ blackHeartIcon }
@@ -192,7 +190,7 @@ function FavoriteRecipes({ match }) {
                   data-testid={ `${i}-horizontal-share-btn` }
                   className="button icons"
                   src={ shareIcon }
-                  onClick={ copyBoard }
+                  onClick={ () => copyBoard(e.id) }
                 >
                   <img src={ shareIcon } alt="shareIcon" />
                 </button>
