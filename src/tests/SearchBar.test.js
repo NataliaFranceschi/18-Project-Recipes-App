@@ -3,13 +3,13 @@ import userEvent from '@testing-library/user-event';
 import { screen } from '@testing-library/react';
 import { act } from 'react-dom/test-utils';
 import App from '../App';
-import renderWithRouter from '../utils/renderWithRouter';
-import { ID_BUTTON_GET_SEARCH, ID_BUTTON_SEARCH, ID_INPUT_SEARCH, ID_RADIO_FIRST_LETTER, ID_RADIO_INGREDIENT, ID_RADIO_NAME, INGRENDIENTE_SEARCH } from '../utils/constants';
+import { ID_BUTTON_GET_SEARCH, ID_BUTTON_SEARCH, ID_INPUT_SEARCH, ID_RADIO_FIRST_LETTER, ID_RADIO_INGREDIENT, ID_RADIO_NAME } from '../utils/constants';
 import dataMockMeals from './mocks/dataMealsMock';
 import dataMockDrinks from './mocks/dataDrinksMock';
+import renderWithRouter from './renderWidth/renderWithRouter';
 
-const MESSAGE = 'Your search must have only 1 (one) character';
-const MESSAGE2 = 'Sorry, we haven\t found any recipes for these filters.';
+// const MESSAGE = 'Your search must have only 1 (one) character';
+// const MESSAGE2 = 'Sorry, we haven\t found any recipes for these filters.';
 
 describe('Testando componente SearchBar', () => {
   beforeEach(() => {

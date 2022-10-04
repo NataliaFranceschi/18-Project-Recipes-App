@@ -1,17 +1,16 @@
 import React from 'react';
-import { createMemoryHistory } from 'history';
+// import { createMemoryHistory } from 'history';
 import { act } from 'react-dom/test-utils';
-import { cleanup, screen, wait, fireEvent } from '@testing-library/react';
+import { cleanup, screen } from '@testing-library/react';
 import oneMeal from '../../cypress/mocks/oneMeal';
-import RecipeDetails from '../pages/RecipeDetails';
-import renderWithRouter from '../utils/renderWithRouter';
+import renderWithRouter from './renderWidth/renderWithRouter';
 import App from '../App';
 
-const match = {
-  params: {
-    recipeId: '52771',
-  },
-};
+// const match = {
+//   params: {
+//     recipeId: '52771',
+//   },
+// };
 
 const PHOTO_TEST_ID = 'recipe-photo';
 const RECIPE_TITLE = 'recipe-title';
@@ -19,8 +18,8 @@ const SHARE_BTN = 'share-btn';
 const FAV_BTN = 'favorite-btn';
 const RECIPE_CATEGORY = 'recipe-category';
 const INSTRUCTIONS = 'instructions';
-const VIDEO_SRC = 'video';
-const START_RECIPE_BTN = 'start-recipe-btn';
+// const VIDEO_SRC = 'video';
+// const START_RECIPE_BTN = 'start-recipe-btn';
 const INGREDIENTS = ['0', '1', '2', '3', '4', '5', '6', '7'];
 const RECOMENDATION0 = '0-recomendation-card';
 const RECOMENDATION1 = '1-recomendation-card';
@@ -28,11 +27,12 @@ const RECOMENDATION2 = '2-recomendation-card';
 const RECOMENDATION3 = '3-recomendation-card';
 const RECOMENDATION4 = '4-recomendation-card';
 const RECOMENDATION5 = '5-recomendation-card';
-const IN_PROGRESS_PATH = '/comidas/52771/in-progress';
-let MEAL_PATH = '/comidas/52771';
+// const IN_PROGRESS_PATH = '/comidas/52771/in-progress';
+// let MEAL_PATH = '/comidas/52771';
 const API_MAX_CALLS = 3;
 
-const testHistory = createMemoryHistory({ initialEntries: [MEAL_PATH] });
+// const testHistory = createMemoryHistory({ initialEntries: [MEAL_PATH] });
+
 describe('Testa a página de detalhes da receita', () => {
   const mealResponse = {
     json: jest.fn().mockResolvedValue(oneMeal),
@@ -40,24 +40,24 @@ describe('Testa a página de detalhes da receita', () => {
   const mockOneMeal = jest.spyOn(global, 'fetch');
   mockOneMeal.mockResolvedValueOnce(mealResponse);
 
-  const mealInProgress = {
-    cocktails: {},
-    meals: {
-      52771: [0],
-    },
-  };
+  // const mealInProgress = {
+  //   cocktails: {},
+  //   meals: {
+  //     52771: [0],
+  //   },
+  // };
 
-  const mealDone = [{
-    id: '52771',
-    type: 'comida',
-    area: 'Italian',
-    category: 'Vegetarian',
-    alcoholicOrNot: '',
-    name: 'Spicy Arrabiata Penne',
-    image: 'https://www.themealdb.com/images/media/meals/ustsqw1468250014.jpg',
-    doneDate: '8/15/2021',
-    tags: ['Pasta', 'Curry'],
-  }];
+  // const mealDone = [{
+  //   id: '52771',
+  //   type: 'comida',
+  //   area: 'Italian',
+  //   category: 'Vegetarian',
+  //   alcoholicOrNot: '',
+  //   name: 'Spicy Arrabiata Penne',
+  //   image: 'https://www.themealdb.com/images/media/meals/ustsqw1468250014.jpg',
+  //   doneDate: '8/15/2021',
+  //   tags: ['Pasta', 'Curry'],
+  // }];
 
   beforeEach(() => {
     MEAL_PATH = '/comidas/52771';
