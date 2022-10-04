@@ -106,7 +106,12 @@ function Drinks() {
                   src={ drink.strDrinkThumb }
                   alt={ drink.strDrink }
                 />
-                <p data-testid={ `${index}-card-name` }>{drink.strDrink}</p>
+                <p
+                  data-testid={ `${index}-card-name` }
+                  className="card_txt"
+                >
+                  {drink.strDrink}
+                </p>
               </div>
             </Link>
           ))}

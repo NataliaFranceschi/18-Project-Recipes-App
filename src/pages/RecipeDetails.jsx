@@ -8,6 +8,17 @@ import { getDoneRecipes, getInProgressRecipes } from '../utils/services';
 import FavShareBar from '../components/FavShareBar';
 import context from '../context/myContext';
 
+import Goat from '../images/lamb.svg';
+import Beef from '../images/beef.svg';
+import Breakfast from '../images/breakfast.svg';
+import Dessert from '../images/dessert.svg';
+import Chicken from '../images/chicken.svg';
+import Side from '../images/side.svg';
+import Seafood from '../images/SeaFood.svg';
+import Pasta from '../images/Pasta.svg';
+import Pork from '../images/pork.svg';
+import Vegetarian from '../images/vegetarian.svg';
+
 function RecipeDetails({ match }) {
   const {
     ingredients,
@@ -70,66 +81,127 @@ function RecipeDetails({ match }) {
     history.push(`${match.url}/in-progress`);
   };
 
+  const arrayIcon = {
+    Goat,
+    Beef,
+    Breakfast,
+    Chicken,
+    Dessert,
+    Side,
+    Seafood,
+    Pasta,
+    Pork,
+    Vegetarian,
+  };
   return (
     <div>
-      <img data-testid="recipe-photo" src={ details[`str${item}Thumb`] } alt="imagem" />
-      <h1 data-testid="recipe-title">{ details[`str${item}`] }</h1>
-      {
-        item === 'Meal'
-          ? (<p data-testid="recipe-category">{ details.strCategory }</p>)
-          : (
-            <p data-testid="recipe-category">{ details.strAlcoholic }</p>
-          )
-      }
-      {
-        ingredients.map((e, i) => (
-          <p
-            key={ i }
-            data-testid={ `${i}-ingredient-name-and-measure` }
-          >
-            {`${e}: ${measure[i]}`}
-          </p>
-        ))
-      }
-      <p data-testid="instructions">{ details.strInstructions }</p>
-      {
-        item === 'Meal'
-        && <iframe
-          width="560"
-          height="315"
-          src={ details.strYoutube.replace('watch?v=', 'embed/') }
-          title="YouTube video player"
-          frameBorder="0"
-          allow="accelerometer;
-          autoplay;
-          clipboard-write;
-          encrypted-media;
-          gyroscope;
-          picture-in-picture"
-          allowFullScreen
-          data-testid="video"
+      <div className="details_container">
+        <img
+          className="image"
+          data-testid="recipe-photo"
+          src={ details[`str${item}Thumb`] }
+          alt="imagem"
         />
-      }
-      <Carousel>
+        <h1
+          className="title_details"
+          data-testid="recipe-title"
+        >
+          { details[`str${item}`] }
+        </h1>
+        <FavShareBar url={ match.url } recipe={ details } />
         {
-          recommended.filter((_, index) => index < NUMBER_OF_RECOMMENDATIONS)
-            .map((e, i) => (
-              <Carousel.Item
-                key={ i }
-                data-testid={ `${i}-recommendation-card` }
-              >
+          item === 'Meal'
+            ? (
+              <div>
+                <p
+                  data-testid="recipe-category"
+                  className="category_details"
+                >
+                  { details.strCategory }
+                </p>
                 <img
-                  className="d-block w-100"
-                  src={ e[`str${reverseItem}Thumb`] }
-                  alt="First slide"
+                  src={ arrayIcon[details.strCategory] }
+                  alt="category"
+                  className="icon_category_details"
                 />
-                <Carousel.Caption data-testid={ `${i}-recommendation-title` }>
-                  <h3>{ e[`str${reverseItem}`] }</h3>
-                </Carousel.Caption>
-              </Carousel.Item>
-            ))
+              </div>
+            )
+            : (
+              <p
+                data-testid="recipe-category"
+                className="alcoholic"
+              >
+                { details.strAlcoholic }
+              </p>
+            )
         }
-      </Carousel>
+        <div className="infos_details_container">
+          <h1 className="deltails_titles_page">Ingredients</h1>
+          {
+            ingredients.map((e, i) => (
+              <ul
+                key={ i }
+                data-testid={ `${i}-ingredient-name-and-measure` }
+              >
+                <li className="ingredients">{`${e}: ${measure[i]}`}</li>
+              </ul>
+            ))
+          }
+
+          <h1 className="deltails_titles_page">Instructions</h1>
+          <p
+            className="instructions"
+            data-testid="instructions"
+          >
+            { details.strInstructions }
+          </p>
+
+          {
+            item === 'Meal'
+            && (
+              <div>
+                <h1 className="deltails_titles_page">Video</h1>
+                <iframe
+                  className="video_details"
+                  src={ details.strYoutube.replace('watch?v=', 'embed/') }
+                  title="YouTube video player"
+                  frameBorder="0"
+                  allow="accelerometer;
+                autoplay;
+                clipboard-write;
+                encrypted-media;
+                gyroscope;
+                picture-in-picture"
+                  allowFullScreen
+                  data-testid="video"
+                />
+              </div>
+            )
+          }
+
+          <h1 className="deltails_titles_page">Recommended</h1>
+          <Carousel className="carrossel">
+            {
+              recommended.filter((_, index) => index < NUMBER_OF_RECOMMENDATIONS)
+                .map((e, i) => (
+                  <Carousel.Item
+                    key={ i }
+                    data-testid={ `${i}-recommendation-card` }
+                  >
+                    <img
+                      className="d-block w-100 img_carrossel"
+                      src={ e[`str${reverseItem}Thumb`] }
+                      alt="First slide"
+                    />
+                    <Carousel.Caption data-testid={ `${i}-recommendation-title` }>
+                      <h3>{ e[`str${reverseItem}`] }</h3>
+                    </Carousel.Caption>
+                  </Carousel.Item>
+                ))
+            }
+          </Carousel>
+        </div>
+      </div>
       {
         !startBtt
       && (
@@ -143,7 +215,6 @@ function RecipeDetails({ match }) {
         </button>
       )
       }
-      <FavShareBar url={ match.url } recipe={ details } />
     </div>
   );
 }

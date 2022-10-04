@@ -78,6 +78,7 @@ function SearchBar() {
           <label htmlFor="ingredientsRadio">
             <input
               data-testid="ingredient-search-radio"
+              className="radio_btn_search"
               type="radio"
               name="radio"
               value="ingredientsRadio"
@@ -89,6 +90,7 @@ function SearchBar() {
           <label htmlFor="nameRadio">
             <input
               data-testid="name-search-radio"
+              className="radio_btn_search"
               type="radio"
               name="radio"
               id="nameRadio"
@@ -99,6 +101,7 @@ function SearchBar() {
           <label htmlFor="firstLetterRadio">
             <input
               data-testid="first-letter-search-radio"
+              className="radio_btn_search"
               name="radio"
               type="radio"
               value="firstLetterRadio"
@@ -109,7 +112,7 @@ function SearchBar() {
           </label>
         </div>
         <button
-          className="btn btn-warning"
+          className="btn btn-warning search_btn"
           data-testid="exec-search-btn"
           type="button"
           onClick={ () => handleSubmitButton() }

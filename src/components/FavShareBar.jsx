@@ -5,6 +5,7 @@ import { saveFav } from '../utils/requestsAPI';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
 import { FAV_RECIPES } from '../utils/constants';
+import '../style/favShareBar.css';
 
 function FavShareBar({ url, recipe, delet }) {
   const [alertCopy, setAlertCopy] = useState(false);
