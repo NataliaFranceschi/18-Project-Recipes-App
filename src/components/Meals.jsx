@@ -3,6 +3,12 @@ import { Link } from 'react-router-dom';
 import context from '../context/myContext';
 import { fetchMeals, fetchCategoriesMeals,
   fetchCategoryMeal } from '../utils/requestsAPI';
+import lamb from '../images/lamb.svg';
+import mealIcon from '../images/mealIcon.svg';
+import beef from '../images/beef.svg';
+import breakfast from '../images/breakfast.svg';
+import dessert from '../images/dessert.svg';
+import chicken from '../images/chicken.svg';
 
 function Meals() {
   const { categoryON,
@@ -57,34 +63,42 @@ function Meals() {
     return mealsApi;
   };
 
+  const arrayIcon = [beef, breakfast, chicken, dessert, lamb];
   return (
     <div>
-      <div>
+      <div className="categories">
         {categories.map(({ strCategory }, index) => (
-          <button
-            data-testid={ `${strCategory}-category-filter` }
-            key={ index }
-            type="button"
-            onClick={ () => handleClick(strCategory) }
-          >
-            {strCategory}
-          </button>
+          <div key={ index } className="category">
+            <button
+              data-testid={ `${strCategory}-category-filter` }
+              type="button"
+              className="categoryButton"
+              onClick={ () => handleClick(strCategory) }
+            >
+              <img className="icon" src={ arrayIcon[index] } alt="meals" />
+            </button>
+            <span>{strCategory}</span>
+          </div>
         ))}
-        <button
-          type="button"
-          data-testid="All-category-filter"
-          onClick={ allMeals }
-        >
-          All
-
-        </button>
+        <div className="category">
+          <button
+            className="categoryButton"
+            type="button"
+            data-testid="All-category-filter"
+            onClick={ allMeals }
+          >
+            <img src={ mealIcon } alt="meals" className="icon" />
+          </button>
+          <span>All</span>
+        </div>
       </div>
-      <div>
+      <div className="cards">
         {renderCard() !== undefined && twelveRecipes(renderCard())
           .map((meal, index) => (
             <Link key={ index } to={ `meals/${meal.idMeal}` }>
               <div
                 data-testid={ `${index}-recipe-card` }
+                className="card"
               >
                 <img
                   data-testid={ `${index}-card-img` }

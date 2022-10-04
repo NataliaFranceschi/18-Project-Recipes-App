@@ -4,10 +4,11 @@ import Meals from '../components/Meals';
 import Drinks from '../components/Drinks';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import '../style/recipes.css';
 
 function Recipes({ match }) {
   return (
-    <div>
+    <div className="recipes">
       <Header name={ match.path } />
       {
         (match.path === '/meals') ? <Meals /> : <Drinks />

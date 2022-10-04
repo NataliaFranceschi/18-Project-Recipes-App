@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
 import context from '../context/myContext';
 import { apiRequest } from '../utils/requestsAPI';
+import '../style/searchBar.css';
 
 function SearchBar() {
   const history = useHistory();
@@ -59,10 +60,11 @@ function SearchBar() {
   };
 
   return (
-    <div>
-      <form>
-        <label htmlFor="searchBarInput">
+    <div className="searchBar">
+      <form className="form">
+        <label htmlFor="searchBarInput" className="text-label">
           <input
+            className="form-control"
             data-testid="search-input"
             type="text"
             placeholder="Pesquisa"
@@ -72,44 +74,47 @@ function SearchBar() {
             onChange={ ({ target: { value } }) => setSearchCharacters(value) }
           />
         </label>
-        <label htmlFor="ingredientsRadio">
-          <input
-            data-testid="ingredient-search-radio"
-            type="radio"
-            name="radio"
-            value="ingredientsRadio"
-            id="ingredientsRadio"
-            onChange={ ({ target: { value } }) => setUserFilter(value) }
-          />
-          Por Ingrediente
-        </label>
-        <label htmlFor="nameRadio">
-          <input
-            data-testid="name-search-radio"
-            type="radio"
-            name="radio"
-            id="nameRadio"
-            onChange={ ({ target: { value } }) => setUserFilter(value) }
-          />
-          Por Nome
-        </label>
-        <label htmlFor="firstLetterRadio">
-          <input
-            data-testid="first-letter-search-radio"
-            name="radio"
-            type="radio"
-            value="firstLetterRadio"
-            id="firstLetterRadio"
-            onChange={ ({ target: { value } }) => setUserFilter(value) }
-          />
-          Pela Letra
-        </label>
+        <div>
+          <label htmlFor="ingredientsRadio">
+            <input
+              data-testid="ingredient-search-radio"
+              type="radio"
+              name="radio"
+              value="ingredientsRadio"
+              id="ingredientsRadio"
+              onChange={ ({ target: { value } }) => setUserFilter(value) }
+            />
+            Ingredient
+          </label>
+          <label htmlFor="nameRadio">
+            <input
+              data-testid="name-search-radio"
+              type="radio"
+              name="radio"
+              id="nameRadio"
+              onChange={ ({ target: { value } }) => setUserFilter(value) }
+            />
+            Name
+          </label>
+          <label htmlFor="firstLetterRadio">
+            <input
+              data-testid="first-letter-search-radio"
+              name="radio"
+              type="radio"
+              value="firstLetterRadio"
+              id="firstLetterRadio"
+              onChange={ ({ target: { value } }) => setUserFilter(value) }
+            />
+            First Letter
+          </label>
+        </div>
         <button
+          className="btn btn-warning"
           data-testid="exec-search-btn"
           type="button"
           onClick={ () => handleSubmitButton() }
         >
-          Buscar
+          SEARCH
         </button>
       </form>
       {/* <RecipeCard /> */}
