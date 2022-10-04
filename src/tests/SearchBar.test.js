@@ -1,162 +1,203 @@
 import React from 'react';
+import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { screen } from '@testing-library/react';
-import { act } from 'react-dom/test-utils';
 import App from '../App';
+import renderWithRouter from '../utils/renderWithRouter';
 import { ID_BUTTON_GET_SEARCH, ID_BUTTON_SEARCH, ID_INPUT_SEARCH, ID_RADIO_FIRST_LETTER, ID_RADIO_INGREDIENT, ID_RADIO_NAME } from '../utils/constants';
-import dataMockMeals from './mocks/dataMealsMock';
-import dataMockDrinks from './mocks/dataDrinksMock';
-import renderWithRouter from './renderWidth/renderWithRouter';
 
-// const MESSAGE = 'Your search must have only 1 (one) character';
-// const MESSAGE2 = 'Sorry, we haven\t found any recipes for these filters.';
-
-describe('Testando componente SearchBar', () => {
-  beforeEach(() => {
-    jest.spyOn(global, 'fetch').mockResolvedValue({
-      json: jest.fn().mockResolvedValue({
-        meals: dataMockMeals,
-        drinks: dataMockDrinks,
-      }),
-    });
-  });
-
-  afterEach(() => {
-    jest.restoreAllMocks();
-  });
-  it('Se SearchBar é renderizado na pagina meals', async () => {
+describe('Testa o component SearchBar', () => {
+  test('Verifica se é possível pesquisar pela primeira letra', () => {
     const { history } = renderWithRouter(<App />);
-    act(() => history.push('/meals'));
+    history.push('/meals');
 
     const searchButton = screen.getByTestId(ID_BUTTON_SEARCH);
     userEvent.click(searchButton);
 
-    const searchInput = screen.getByTestId(ID_BUTTON_GET_SEARCH);
-    const searchTypeButton = screen.getByTestId(ID_INPUT_SEARCH);
-    expect(searchInput).toBeInTheDocument();
-    expect(searchTypeButton).toBeInTheDocument();
-  });
-
-  it('Se é possivel pesquisar um determinado ingrediente na pagina de comidas', async () => {
-    jest.spyOn(global, 'fetch').mockResolvedValue({
-      json: jest.fn().mockResolvedValue({
-        meals: dataMockMeals,
-      }),
-    });
-    const { history } = renderWithRouter(<App />);
-    act(() => history.push('/meals'));
-
-    const searchButton = screen.getByTestId(ID_BUTTON_SEARCH);
-    userEvent.click(searchButton);
+    const radioButton = screen.getByTestId(ID_RADIO_FIRST_LETTER);
+    userEvent.click(radioButton);
 
     const searchInput = screen.getByTestId(ID_INPUT_SEARCH);
-    const ingredientRadioButton = screen.getByTestId(ID_RADIO_INGREDIENT);
-    const searchTypeButton = screen.getByTestId(ID_BUTTON_GET_SEARCH);
+    userEvent.paste(searchInput, 'onion');
 
-    userEvent.type(searchInput, 'cumin');
-    userEvent.click(ingredientRadioButton);
-    userEvent.click(searchTypeButton);
-
-    expect(ingredientRadioButton).toBeChecked();
-    expect(global.fetch).toHaveBeenCalledWith('https://www.themealdb.com/api/json/v1/1/filter.php?i=cumin');
+    const buttonSearch = screen.getByTestId(ID_BUTTON_GET_SEARCH);
+    userEvent.click(buttonSearch);
   });
 
-  // it('Se é possivel pesquisar pela primeira letra na pagina de drinks', async () => {
-  //   jest.spyOn(global, 'fetch').mockResolvedValue({
-  //     json: jest.fn().mockResolvedValue({
-  //       drinks: dataMockDrinks,
-  //     }),
-  //   });
+  test('Verifica se é possível pesquisar pelo ingrediente na pagina de comidas.', () => {
+    const { history } = renderWithRouter(<App />);
+    history.push('/meals');
 
+    const searchButton = screen.getByTestId(ID_BUTTON_SEARCH);
+    userEvent.click(searchButton);
+
+    const radioButton = screen.getByTestId(ID_RADIO_INGREDIENT);
+    userEvent.click(radioButton);
+
+    const searchInput = screen.getByTestId(ID_INPUT_SEARCH);
+    userEvent.type(searchInput, 'bacon');
+
+    const buttonSearch = screen.getByTestId(ID_BUTTON_GET_SEARCH);
+    userEvent.click(buttonSearch);
+  });
+
+  test('Verifica se é possível pesquisar pela primeira letra do ingrediente na pagina de drinks.', () => {
+    const { history } = renderWithRouter(<App />);
+    history.push('/drinks');
+
+    const searchButton = screen.getByTestId(ID_BUTTON_SEARCH);
+    userEvent.click(searchButton);
+
+    const radioButton = screen.getByTestId(ID_RADIO_FIRST_LETTER);
+    userEvent.click(radioButton);
+
+    const searchInput = screen.getByTestId(ID_INPUT_SEARCH);
+    userEvent.type(searchInput, 'a');
+
+    const buttonSearch = screen.getByTestId(ID_BUTTON_GET_SEARCH);
+    userEvent.click(buttonSearch);
+  });
+
+  test('Verifica se é possível pesquisar pelo ingrediente na pagina de drinks.', () => {
+    const { history } = renderWithRouter(<App />);
+    history.push('/drinks');
+
+    const searchButton = screen.getByTestId(ID_BUTTON_SEARCH);
+    userEvent.click(searchButton);
+
+    const radioButton = screen.getByTestId(ID_RADIO_INGREDIENT);
+    userEvent.click(radioButton);
+
+    const searchInput = screen.getByTestId(ID_INPUT_SEARCH);
+    userEvent.type(searchInput, 'cognac');
+
+    const buttonSearch = screen.getByTestId(ID_BUTTON_GET_SEARCH);
+    userEvent.click(buttonSearch);
+  });
+
+  test('Verifica se ao pesquisar na pagina de comida por mais de um letra o alerta é acionado', async () => {
+    global.alert = jest.fn(() => 'Your search must have only 1 (one) character');
+
+    const { history } = renderWithRouter(<App />);
+    history.push('/meals');
+
+    const searchButton = screen.getByTestId(ID_BUTTON_SEARCH);
+    userEvent.click(searchButton);
+
+    const radioButton = screen.getByTestId(ID_RADIO_FIRST_LETTER);
+    userEvent.click(radioButton);
+
+    const searchInput = screen.getByTestId(ID_INPUT_SEARCH);
+    userEvent.paste(searchInput, 'mango');
+
+    const buttonSearch = screen.getByTestId(ID_BUTTON_GET_SEARCH);
+    userEvent.click(buttonSearch);
+
+    await waitFor(() => {
+      expect(global.alert).toHaveBeenCalled();
+    });
+    global.alert.mockClear();
+  });
+
+  test('Verifica se retorna alert quando a busca não tem resultado', async () => {
+    global.alert = jest.fn(() => 'Sorry, we haven\'t found any recipes for these filters.');
+    const { history } = renderWithRouter(<App />);
+
+    history.push('/meals');
+
+    const searchButton = screen.getByTestId(ID_BUTTON_SEARCH);
+    userEvent.click(searchButton);
+
+    const radioButton = screen.getByTestId(ID_RADIO_INGREDIENT);
+    userEvent.click(radioButton);
+
+    const searchInput = screen.getByTestId(ID_INPUT_SEARCH);
+    userEvent.paste(searchInput, 'grupo');
+
+    const buttonSearch = screen.getByTestId(ID_BUTTON_GET_SEARCH);
+
+    userEvent.click(buttonSearch);
+
+    await waitFor(() => {
+      expect(global.alert).toHaveBeenCalled();
+    });
+    global.alert.mockClear();
+  });
+
+  // test('Verifica se quando apenas um comida é encontrada, o usuário é redirecionado para a tela de detalhes', () => {
   //   const { history } = renderWithRouter(<App />);
-  //   act(() => history.push('/drinks'));
+  //   history.push('/meals');
 
   //   const searchButton = screen.getByTestId(ID_BUTTON_SEARCH);
   //   userEvent.click(searchButton);
 
+  //   const radioButton = screen.getByTestId(ID_RADIO_INGREDIENT);
+  //   userEvent.click(radioButton);
+
   //   const searchInput = screen.getByTestId(ID_INPUT_SEARCH);
-  //   const firstLetterRadioButton = screen.getByTestId(ID_RADIO_FIRST_LETTER);
-  //   const searchTypeButton = screen.getByTestId(ID_BUTTON_GET_SEARCH);
+  //   userEvent.paste(searchInput, 'burek');
 
-  //   userEvent.type(searchInput, 't');
-  //   userEvent.click(firstLetterRadioButton);
-  //   userEvent.click(searchTypeButton);
+  //   const buttonSearch = screen.getByTestId(ID_BUTTON_GET_SEARCH);
 
-  //   expect(firstLetterRadioButton).toBeChecked();
-  //   expect(global.fetch).toHaveBeenCalledWith('https://www.thecocktaildb.com/api/json/v1/1/search.php?f=t');
+  //   userEvent.click(buttonSearch);
   // });
-
-  it('Se redireciona caso pesquise apenas um receita', () => {
+  test('Verifica se quando apenas um comida é encontrada, o usuário é redirecionado para a tela de detalhes', async () => {
     const { history } = renderWithRouter(<App />);
-    act(() => history.push('/meals'));
+    history.push('/meals');
 
     const searchButton = screen.getByTestId(ID_BUTTON_SEARCH);
     userEvent.click(searchButton);
 
-    const searchInput = screen.getByTestId(ID_BUTTON_SEARCH);
-    const searchType = screen.getByTestId(ID_BUTTON_GET_SEARCH);
-    const nameRadio = screen.getByTestId(ID_RADIO_NAME);
-    userEvent.type(searchInput, 'Arrabiata');
-    userEvent.click(nameRadio);
-    userEvent.click(searchType);
-
-    // expect(history.location.pathname).toBe('/meals');
-  });
-
-  it('Verifica se ao clicar no input PELA LETRA, e digitar mais de uma letra um alerta é acionado.', async () => {
-    jest.spyOn(global, 'alert')
-      .mockImplementation();
-
-    // jest.spyOn(global, 'alert')
-    //   .mockImplementation(() => MESSAGE2);
-
-    const { history } = renderWithRouter(<App />);
-    act(() => history.push('/meals'));
-
-    const searchButton = screen.getByTestId(ID_BUTTON_SEARCH);
-    userEvent.click(searchButton);
+    const radio = screen.getByTestId(ID_RADIO_NAME);
+    userEvent.click(radio);
 
     const searchInput = screen.getByTestId(ID_INPUT_SEARCH);
-    const firstLetterRadio = screen.getByTestId(ID_RADIO_FIRST_LETTER);
-    const buttonGetSearch = screen.getByTestId(ID_BUTTON_GET_SEARCH);
+    userEvent.paste(searchInput, 'Arrabiata');
 
-    userEvent.type(searchInput, 'xablau');
-    userEvent.click(firstLetterRadio);
-    userEvent.click(buttonGetSearch);
+    const buttonSearch = screen.getByTestId(ID_BUTTON_GET_SEARCH);
+    userEvent.click(buttonSearch);
 
-    expect(global.alert).toHaveBeenCalled();
-    // expect(global.alert).toBeCalled();
-    // expect(global.alert()).toBe(MESSAGE);
+    await waitFor(() => expect(history.location.pathname).toBe('/meals/52771'));
   });
 
-  it('Pesquisa por uma ingrediente que não existe.', async () => {
-    // global.alert = jest.fn();
-    jest.spyOn(global, 'fetch').mockResolvedValue({
-      json: jest.fn().mockResolvedValue({
-        meals: [],
-      }),
+  test('Verifica se quando apenas um drink é encontrada, o usuário é redirecionado para a tela de detalhes', async () => {
+    const { history } = renderWithRouter(<App />);
+    history.push('/drinks');
+
+    const searchButton = screen.getByTestId(ID_BUTTON_SEARCH);
+    userEvent.click(searchButton);
+
+    const radio = screen.getByTestId(ID_RADIO_NAME);
+    userEvent.click(radio);
+
+    const searchInput = screen.getByTestId(ID_INPUT_SEARCH);
+    userEvent.paste(searchInput, 'Lassi - Mango');
+
+    const buttonSearch = screen.getByTestId(ID_BUTTON_GET_SEARCH);
+    userEvent.click(buttonSearch);
+
+    await waitFor(() => expect(history.location.pathname).toBe('/drinks/12698'));
+  });
+
+  test('Verifica se nenhum drink é encontrado, o usuário recebe um ALERT', async () => {
+    global.alert = jest.fn(() => 'Sorry, we haven\'t found any recipes for these filters.');
+    const { history } = renderWithRouter(<App />);
+    history.push('/drinks');
+
+    const searchButton = screen.getByTestId(ID_BUTTON_SEARCH);
+    userEvent.click(searchButton);
+
+    const radio = screen.getByTestId(ID_RADIO_NAME);
+    userEvent.click(radio);
+
+    const searchInput = screen.getByTestId(ID_INPUT_SEARCH);
+    userEvent.paste(searchInput, 'grupo24');
+
+    const buttonSearch = screen.getByTestId(ID_BUTTON_GET_SEARCH);
+    userEvent.click(buttonSearch);
+
+    await waitFor(() => {
+      expect(global.alert).toHaveBeenCalled();
     });
-
-    const { history } = renderWithRouter(<App />);
-    act(() => history.push('/meals'));
-
-    const searchButton = screen.getByTestId(ID_BUTTON_SEARCH);
-    userEvent.click(searchButton);
-
-    const searchInput = screen.getByTestId(ID_INPUT_SEARCH);
-    const buttonGetSearch = screen.getByTestId(ID_BUTTON_GET_SEARCH);
-    const igredienteRadio = screen.getByTestId(ID_RADIO_INGREDIENT);
-
-    userEvent.type(searchInput, 'xablau');
-    userEvent.click(igredienteRadio);
-    userEvent.click(buttonGetSearch);
-
-    expect(global.alert).toHaveBeenCalled(0);
-
-    // console.log(global.alert);
-    // // expect(alert).toBeCalled();
-    // console.log(global.alert());
-    // expect(global.alert()).toBe(MESSAGE2);
-  //   // // expect(global.alert()).toBe(MESSAGE);
+    global.alert.mockClear();
   });
 });

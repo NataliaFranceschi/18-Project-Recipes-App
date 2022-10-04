@@ -22,9 +22,21 @@ export const DONE_RECIPES = 'doneRecipes';
 export const IN_PROGRESS = 'inProgressRecipes';
 
 export const ID_BUTTON_SEARCH = 'search-top-btn';
+// const searchImgButtonID = 'search-top-btn';
+
 export const ID_INPUT_SEARCH = 'search-input';
+// const searchInputID = 'search-input';
+
 export const ID_BUTTON_GET_SEARCH = 'exec-search-btn';
+// const buttonSearchID = 'exec-search-btn';
+
 export const ID_RADIO_NAME = 'name-search-radio';
+// const nameSearch = 'name-search-radio';
+
 export const ID_RADIO_INGREDIENT = 'ingredient-search-radio';
+// const ingredientID = 'ingredient-search-radio';
+
 export const ID_RADIO_FIRST_LETTER = 'first-letter-search-radio';
+// const radioFirstLetter = 'first-letter-search-radio';
+
 export const FAV_RECIPES = 'favoriteRecipes';
