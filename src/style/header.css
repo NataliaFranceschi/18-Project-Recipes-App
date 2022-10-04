@@ -28,3 +28,17 @@
   height: 40px;
   width: auto;
 }
+
+/* .logo {
+  left: 15px;
+  position: absolute;
+  top: 12px;
+  width: 150px;
+} */
+
+.logo {
+  left: 15px;
+  position: absolute;
+  top: 8px;
+  width: 33px;
+}

@@ -34,3 +34,12 @@
   margin: 10px;
   width: 80%;
 }
+
+/* .search_btn {
+  background-color: hsl(45, 89%, 54%);
+  color: hsl(169, 40%, 25%);
+} */
+
+.radio_btn_search {
+  margin-right: 5px;
+}

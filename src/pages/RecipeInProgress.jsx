@@ -4,6 +4,8 @@ import { useHistory, useParams, useRouteMatch } from 'react-router-dom';
 import { recipeInProgressAPI, saveDone } from '../utils/requestsAPI';
 import context from '../context/myContext';
 import FavShareBar from '../components/FavShareBar';
+import '../style/inProgress.css';
+import folha from '../images/id_visual_leaf.png';
 
 function RecipeInProgress({ match }) {
   const { id } = useParams();
@@ -142,56 +144,96 @@ function RecipeInProgress({ match }) {
 
   return (
     <div>
-      <img data-testid="recipe-photo" src={ details[`str${item}Thumb`] } alt="imagem" />
-      <h1 data-testid="recipe-title">{ details[`str${item}`] }</h1>
+      <img
+        className="folha"
+        src={ folha }
+        alt="folha"
+      />
+      <img
+        className="image"
+        data-testid="recipe-photo"
+        src={ details[`str${item}Thumb`] }
+        alt="imagem"
+      />
+      <h1
+        className="title_details"
+        data-testid="recipe-title"
+      >
+        { details[`str${item}`] }
+      </h1>
       {
         item === 'Meal'
-          ? (<p data-testid="recipe-category">{ details.strCategory }</p>)
+          ? (
+            <p
+              className="alcoholic"
+              data-testid="recipe-category"
+            >
+              { `Category: ${details.strCategory}` }
+            </p>
+          )
           : (
-            <p data-testid="recipe-category">{ details.strAlcoholic }</p>
+            <p
+              className="alcoholic"
+              data-testid="recipe-category"
+            >
+              { details.strAlcoholic }
+            </p>
           )
       }
-      {
+      <div className="infos_details_container">
 
-        ingredients
-          .filter((ele) => ele !== '')
-          .map((e, i) => (
-            <p
-              key={ i }
-              data-testid={ `${i}-ingredient-name-and-measure` }
-            >
-              {`${e}: ${measure[i]}`}
-              <label
-                htmlFor="ingredientes"
-                data-testid={ `${i}-ingredient-step` }
-              >
-                <input
-                  onChange={ handleIngredientChecked }
-                  name="ingredientes"
-                  id="ingredientes"
-                  type="checkbox"
-                  value={ e }
-                  checked={ verificaCheck(e) }
-                />
-              </label>
-            </p>
-          ))
-      }
-      <p data-testid="instructions">{ details.strInstructions }</p>
-      <button
-        type="button"
-        data-testid="finish-recipe-btn"
-        disabled={ isDisabled }
-        onClick={ finishRecipe }
-      >
-        Finish
+        <h1 className="deltails_titles_page">Ingredients</h1>
+        {
+          ingredients
+            .filter((ele) => ele !== '')
+            .map((e, i) => (
+              <ul key={ i }>
+                <li
+                  className="ingredients"
+                  data-testid={ `${i}-ingredient-name-and-measure` }
+                >
+                  {`${e}: ${measure[i]}`}
+                  <label
+                    htmlFor="ingredientes"
+                    data-testid={ `${i}-ingredient-step` }
+                  >
+                    <input
+                      onChange={ handleIngredientChecked }
+                      className="check_box"
+                      name="ingredientes"
+                      id="ingredientes"
+                      type="checkbox"
+                      value={ e }
+                      checked={ verificaCheck(e) }
+                    />
+                  </label>
+                </li>
+              </ul>
+            ))
+        }
+        <h1 className="deltails_titles_page">Instructions</h1>
+        <p
+          data-testid="instructions"
+          className="instructions"
+        >
+          { details.strInstructions }
+        </p>
+        <button
+          type="button"
+          className="btn_finish"
+          data-testid="finish-recipe-btn"
+          disabled={ isDisabled }
+          style={ isDisabled ? { opacity: '50%' } : {} }
+          onClick={ finishRecipe }
+        >
+          Finish
 
-      </button>
-      <FavShareBar url={ match.url.replace('/in-progress', '') } recipe={ details } />
+        </button>
+        <FavShareBar url={ match.url.replace('/in-progress', '') } recipe={ details } />
+      </div>
     </div>
   );
 }
-
 RecipeInProgress.propTypes = {
   match: PropTypes.shape({
     path: PropTypes.string.isRequired,
@@ -200,5 +242,4 @@ RecipeInProgress.propTypes = {
       id: PropTypes.string.isRequired,
     }).isRequired,
   }).isRequired };
-
 export default RecipeInProgress;
