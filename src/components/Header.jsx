@@ -4,6 +4,8 @@ import { useHistory } from 'react-router';
 import profileIcon from '../images/profileIcon.svg';
 import searchIcon from '../images/searchIcon.svg';
 import SearchBar from './SearchBar';
+import logo from '../images/logo_a.png';
+
 import '../style/header.css';
 import mealIcon from '../images/mealIcon.svg';
 import drinkIcon from '../images/drinkIcon.svg';
@@ -28,7 +30,24 @@ function Header({ name }) {
 
   return (
     <div data-testid="page-title">
+      <img className="logo" src={ logo } alt="logo" />
       <div className="header">
+        {
+          validationHeader[name][2].pesquisa
+        && (
+          <button
+            type="button"
+            className="headerButton"
+            onClick={ () => setShowElement(!showElement) }
+          >
+            <img
+              data-testid="search-top-btn"
+              src={ searchIcon }
+              alt="searchIcon"
+            />
+          </button>
+        )
+        }
         {
           validationHeader[name][1].perfil
         && (
@@ -45,22 +64,6 @@ function Header({ name }) {
           </button>
         )
 
-        }
-        {
-          validationHeader[name][2].pesquisa
-        && (
-          <button
-            type="button"
-            className="headerButton"
-            onClick={ () => setShowElement(!showElement) }
-          >
-            <img
-              data-testid="search-top-btn"
-              src={ searchIcon }
-              alt="searchIcon"
-            />
-          </button>
-        )
         }
       </div>
       <div className="title">

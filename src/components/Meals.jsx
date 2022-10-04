@@ -105,7 +105,12 @@ function Meals() {
                   src={ meal.strMealThumb }
                   alt={ meal.strMeal }
                 />
-                <p data-testid={ `${index}-card-name` }>{meal.strMeal}</p>
+                <p
+                  className="card_txt"
+                  data-testid={ `${index}-card-name` }
+                >
+                  {meal.strMeal}
+                </p>
               </div>
             </Link>
           ))}
