@@ -8,9 +8,9 @@ function SearchBar() {
   const history = useHistory();
   const { pathname: pagePath } = useLocation();
 
-  console.log(pagePath === '/meals');
+  // console.log(pagePath === '/meals');
 
-  const { searchResult, setSearchResult,
+  const { setSearchResult,
     setLoading,
     setCategoryON,
     setSearchON,
@@ -19,7 +19,7 @@ function SearchBar() {
   const [searchCharacters, setSearchCharacters] = useState('');
   const [userFilter, setUserFilter] = useState('ingredientsRadio'); // estado dos radios
 
-  console.log(searchResult);
+  // console.log(searchResult);
 
   const handleSubmitButton = async () => {
     const SIZE_SEARCH = Number(searchCharacters.length);

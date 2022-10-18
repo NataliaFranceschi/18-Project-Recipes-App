@@ -3,7 +3,7 @@ import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { testIds, VALID_EMAIL, VALID_PASSWORD } from '../utils/constants';
 import App from '../App';
-import renderWithRouter from '../utils/renderWithRouter';
+import renderWithRouter from './renderWidth/renderWithRouter';
 
 describe('Testa a tela de login', () => {
   it('Verifica se os campos de input e o botão de entrar aparecem na tela', () => {
