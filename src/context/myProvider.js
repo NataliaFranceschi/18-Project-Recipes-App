@@ -5,7 +5,6 @@ import MyContext from './myContext';
 function Provider({ children }) {
   const [isDisabled, setIsDisabled] = useState(true);
   const [dataInputs, setDataInputs] = useState({ email: '', password: '' });
-  // Para resultado da pesquisa no SearchBar
   const [searchResult, setSearchResult] = useState('');
 
   const [progressRecipe, setProgressRecipe] = useState({
@@ -14,7 +13,7 @@ function Provider({ children }) {
   });
   const [loading, setLoading] = useState(false);
   const [loading2, setLoading2] = useState(true);
-  const [selectedRadioButton, setSelectedRadioButton] = useState('ingredientsRadio'); // estado do input de t
+  const [selectedRadioButton, setSelectedRadioButton] = useState('ingredientsRadio');
   const [categoryON, setCategoryON] = useState(false);
   const [searchON, setSearchON] = useState(false);
   const [idDoneRecipes, setIdDoneRecipes] = useState({});
@@ -116,13 +115,6 @@ function Provider({ children }) {
     setIngredients,
     idDoneRecipes,
     setIdDoneRecipes,
-
-    // dataInputLocalStorage,
-    // setDataInputLocalStorage,
-    // mealsTokenStorage,
-    // setMealsTokenStorage,
-    // drinksTokenStorage,
-    // setDrinksTokenStorage,
     searchResult,
     setSearchResult,
     localStorageIngredientProgress,
