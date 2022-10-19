@@ -21,8 +21,8 @@
 .folha {
   left: -15px;
   position: absolute;
-  transform: rotate(260deg);
   top: -15px;
+  transform: rotate(260deg);
   width: 100px;
   z-index: 1;
 }
