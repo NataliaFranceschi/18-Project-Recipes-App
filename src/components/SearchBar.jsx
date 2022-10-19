@@ -1,15 +1,12 @@
 import React, { useState, useContext } from 'react';
-import { useLocation, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import context from '../context/myContext';
 import { apiRequest } from '../utils/requestsAPI';
 import '../style/searchBar.css';
 
-function SearchBar() {
+function SearchBar({ path }) {
   const history = useHistory();
-  const { pathname: pagePath } = useLocation();
-
-  console.log(pagePath === '/meals');
-
   const { searchResult, setSearchResult,
     setLoading,
     setCategoryON,
@@ -27,8 +24,8 @@ function SearchBar() {
       global.alert('Your search must have only 1 (one) character');
     }
     setLoading(true);
-    if (pagePath === '/meals') {
-      const returnFilter = await apiRequest(userFilter, searchCharacters, pagePath);
+    if (path === '/meals') {
+      const returnFilter = await apiRequest(userFilter, searchCharacters, path);
       if (returnFilter.meals === null) {
         global.alert('Sorry, we haven\'t found any recipes for these filters.');
       } else if (returnFilter.meals.length === 1) {
@@ -43,8 +40,8 @@ function SearchBar() {
       setLoading(false);
     }
 
-    if (pagePath === '/drinks') {
-      const returnFilter = await apiRequest(userFilter, searchCharacters, pagePath);
+    if (path === '/drinks') {
+      const returnFilter = await apiRequest(userFilter, searchCharacters, path);
       if (returnFilter.drinks === null) {
         global.alert('Sorry, we haven\'t found any recipes for these filters.');
       } else if (returnFilter.drinks.length === 1) {
@@ -120,9 +117,11 @@ function SearchBar() {
           SEARCH
         </button>
       </form>
-      {/* <RecipeCard /> */}
     </div>
   );
 }
+
+SearchBar.propTypes = {
+  path: PropTypes.string.isRequired };
 
 export default SearchBar;
