@@ -17,7 +17,7 @@ describe('Testa o componente Search Bar', () => {
         <Recipes match={ match } />
       </Provider>,
     );
-
+    
     userEvent.click(screen.getByTestId(searchButton));
     const input = screen.getByTestId(searchInput);
     userEvent.type(input, 'bread');
