@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
-import { useHistory, useParams, useRouteMatch } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { recipeInProgressAPI, saveDone } from '../utils/requestsAPI';
 import context from '../context/myContext';
 import FavShareBar from '../components/FavShareBar';
@@ -8,7 +8,7 @@ import '../style/inProgress.css';
 import folha from '../images/id_visual_leaf.png';
 
 function RecipeInProgress({ match }) {
-  const { id } = useParams();
+  const { id } = match.params;
   const history = useHistory();
   const {
     addMeals,
@@ -22,8 +22,6 @@ function RecipeInProgress({ match }) {
   const [item, setItem] = useState('');
   const [details, setDetails] = useState({});
   const [measure, setMeasure] = useState([]);
-  const { path } = useRouteMatch();
-  const [page, setPage] = useState('');
   const [isDisabled, setIsDisabled] = useState(true);
 
   const filterIngredients = (key, response) => {
@@ -49,14 +47,6 @@ function RecipeInProgress({ match }) {
     request2();
   }, []);
 
-  useEffect(() => {
-    if (path.split('/')[1] === 'meals') {
-      setPage('meal');
-    } else {
-      setPage('drink');
-    }
-  }, [path]);
-
   const verificaCheck = (ingre) => {
     if (progressRecipe.meals[id]) {
       return progressRecipe.meals[id]
@@ -74,12 +64,12 @@ function RecipeInProgress({ match }) {
   const numberItensStorageDrinks = progressRecipe.drinks[id] || [];
 
   const habilitarButton = () => {
-    if (page === 'meal' && filterIngredientes.length
+    if (match.url.includes('meal') && filterIngredientes.length
     === numberItensStorageMeals.length) {
       return setIsDisabled(false);
     }
 
-    if (page === 'drink' && filterIngredientes.length
+    if (match.url.includes('drink') && filterIngredientes.length
     === numberItensStorageDrinks.length) {
       return setIsDisabled(false);
     }
@@ -91,14 +81,14 @@ function RecipeInProgress({ match }) {
   }, [progressRecipe]);
 
   const handleIngredientChecked = ({ target }) => {
-    if (page === 'meal') {
+    if (match.url.includes('meal')) {
       if (target.checked === true) {
         addMeals(id, target.value);
       } else {
         removeMeals(id, target.value);
       }
     }
-    if (page === 'drink') {
+    if (match.url.includes('drink')) {
       if (target.checked === true) {
         addDrinks(id, target.value);
       } else {
@@ -107,11 +97,8 @@ function RecipeInProgress({ match }) {
     }
   };
 
-  // console.log(page);
-
   const finishRecipe = () => {
     const myDate = new Date(Date.now()).toLocaleString().split(',')[0];
-    // const myTags = details.strTags.split(',');
     if (match.url.includes('meals')) {
       const objFav = {
         id: details.idMeal,

@@ -5,7 +5,6 @@ import profileIcon from '../images/profileIcon.svg';
 import searchIcon from '../images/searchIcon.svg';
 import SearchBar from './SearchBar';
 import logo from '../images/logo_a.png';
-
 import '../style/header.css';
 import mealIcon from '../images/mealIcon.svg';
 import drinkIcon from '../images/drinkIcon.svg';
@@ -70,7 +69,7 @@ function Header({ name }) {
         <img src={ validationHeader[name][3] } alt="title" />
         <h1 ata-testid="page-title">{ validationHeader[name][0] }</h1>
       </div>
-      { showElement && <SearchBar /> }
+      { showElement && <SearchBar path={ name } /> }
     </div>
   );
 }

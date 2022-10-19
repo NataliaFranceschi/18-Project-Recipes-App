@@ -1,48 +1,14 @@
 import React from 'react';
 import { screen } from '@testing-library/react';
-import { act } from 'react-dom/test-utils';
 import userEvent from '@testing-library/user-event';
-import App from '../App';
-import renderWithRouter from './renderWidth/renderWithRouter';
+import Header from '../components/Header';
+import renderWithRouter from '../utils/renderWithRouter';
 
-describe('Testa o Header', () => {
-  it('Testa o Header', () => {
-    const { history } = renderWithRouter(<App />);
-    act(() => history.push('/meals'));
-    const profileButton = screen.getByTestId('profile-top-btn');
-    expect(profileButton).toBeInTheDocument();
-  });
-
-  it('Testa o nome da pagina', () => {
-    const { history } = renderWithRouter(<App />);
-    act(() => history.push('/meals'));
-    const pageName = screen.getByTestId('page-title');
-    expect(pageName).toBeInTheDocument();
-  });
-  it('Testa o Search Icon', () => {
-    const { history } = renderWithRouter(<App />);
-    act(() => history.push('/meals'));
-    const search = screen.getByTestId('search-top-btn');
-    expect(search).toBeInTheDocument();
-  });
-  it('Testa a funcionalidade do searchIcon', async () => {
-    const { history } = renderWithRouter(<App />);
-    act(() => history.push('/meals'));
-    const search = await screen.findByTestId('search-top-btn');
-    userEvent.click(search);
-    expect(screen.findByTestId('search-input'));
-  });
-  it('Testa o botão Profile', () => {
-    const { history } = renderWithRouter(<App />);
-    act(() => history.push('/meals'));
-    const profileButton = screen.getByTestId('profile-top-btn');
-    userEvent.click(profileButton);
+describe('Testa o componente Header', () => {
+  it('Testa se ao clicar no botão de profile, redireciona para página Profile', () => {
+    const name = '/meals';
+    const { history } = renderWithRouter(<Header name={ name } />);
+    userEvent.click(screen.getByTestId('profile-top-btn'));
     expect(history.location.pathname).toBe('/profile');
-  });
-  it('Testa o nome da pagina', () => {
-    const { history } = renderWithRouter(<App />);
-    act(() => history.push('/favorite-recipes'));
-    const pageNam = screen.getByText(/Favorite Recipes/i);
-    expect(pageNam).toHaveTextContent('Favorite Recipes');
   });
 });

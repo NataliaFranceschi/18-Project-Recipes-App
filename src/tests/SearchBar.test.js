@@ -1,203 +1,116 @@
 import React from 'react';
 import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import App from '../App';
+import Recipes from '../pages/Recipes';
 import renderWithRouter from '../utils/renderWithRouter';
-import { ID_BUTTON_GET_SEARCH, ID_BUTTON_SEARCH, ID_INPUT_SEARCH, ID_RADIO_FIRST_LETTER, ID_RADIO_INGREDIENT, ID_RADIO_NAME } from '../utils/constants';
+import Provider from '../context/myProvider';
 
-describe('Testa o component SearchBar', () => {
-  test('Verifica se é possível pesquisar pela primeira letra', () => {
-    const { history } = renderWithRouter(<App />);
-    history.push('/meals');
+describe('Testa o componente Search Bar', () => {
+  const searchButton = 'search-top-btn';
+  const searchInput = 'search-input';
+  const searchExec = 'exec-search-btn';
 
-    const searchButton = screen.getByTestId(ID_BUTTON_SEARCH);
-    userEvent.click(searchButton);
-
-    const radioButton = screen.getByTestId(ID_RADIO_FIRST_LETTER);
-    userEvent.click(radioButton);
-
-    const searchInput = screen.getByTestId(ID_INPUT_SEARCH);
-    userEvent.paste(searchInput, 'onion');
-
-    const buttonSearch = screen.getByTestId(ID_BUTTON_GET_SEARCH);
-    userEvent.click(buttonSearch);
+  it('Testa a procura por ingrediente em meals', async () => {
+    const match = { path: '/meals' };
+    renderWithRouter(
+      <Provider>
+        <Recipes match={ match } />
+      </Provider>,
+    );
+    
+    userEvent.click(screen.getByTestId(searchButton));
+    const input = screen.getByTestId(searchInput);
+    userEvent.type(input, 'bread');
+    userEvent.click(screen.getByTestId('ingredient-search-radio'));
+    userEvent.click(screen.getByTestId(searchExec));
+    await waitFor(() => expect(screen.getByText(/BBQ Pork Sloppy Joes/i)).toBeInTheDocument(), { timeout: 3000 });
   });
 
-  test('Verifica se é possível pesquisar pelo ingrediente na pagina de comidas.', () => {
-    const { history } = renderWithRouter(<App />);
-    history.push('/meals');
+  it('Testa a procura por nome em meals', async () => {
+    const match = { path: '/meals' };
+    const { history } = renderWithRouter(
+      <Provider>
+        <Recipes match={ match } />
+      </Provider>,
+    );
 
-    const searchButton = screen.getByTestId(ID_BUTTON_SEARCH);
-    userEvent.click(searchButton);
-
-    const radioButton = screen.getByTestId(ID_RADIO_INGREDIENT);
-    userEvent.click(radioButton);
-
-    const searchInput = screen.getByTestId(ID_INPUT_SEARCH);
-    userEvent.type(searchInput, 'bacon');
-
-    const buttonSearch = screen.getByTestId(ID_BUTTON_GET_SEARCH);
-    userEvent.click(buttonSearch);
+    userEvent.click(screen.getByTestId(searchButton));
+    const input = screen.getByTestId(searchInput);
+    userEvent.type(input, 'pasta');
+    userEvent.click(screen.getByTestId('name-search-radio'));
+    userEvent.click(screen.getByTestId(searchExec));
+    await waitFor(() => expect(history.location.pathname).toBe('/meals/52777'), { timeout: 3000 });
   });
 
-  test('Verifica se é possível pesquisar pela primeira letra do ingrediente na pagina de drinks.', () => {
-    const { history } = renderWithRouter(<App />);
-    history.push('/drinks');
+  it('Testa a procura por nome em drinks', async () => {
+    const match = { path: '/drinks' };
+    const { history } = renderWithRouter(
+      <Provider>
+        <Recipes match={ match } />
+      </Provider>,
+    );
 
-    const searchButton = screen.getByTestId(ID_BUTTON_SEARCH);
-    userEvent.click(searchButton);
-
-    const radioButton = screen.getByTestId(ID_RADIO_FIRST_LETTER);
-    userEvent.click(radioButton);
-
-    const searchInput = screen.getByTestId(ID_INPUT_SEARCH);
-    userEvent.type(searchInput, 'a');
-
-    const buttonSearch = screen.getByTestId(ID_BUTTON_GET_SEARCH);
-    userEvent.click(buttonSearch);
+    userEvent.click(screen.getByTestId(searchButton));
+    const input = screen.getByTestId(searchInput);
+    userEvent.type(input, 'A1');
+    userEvent.click(screen.getByTestId('name-search-radio'));
+    userEvent.click(screen.getByTestId(searchExec));
+    await waitFor(() => expect(history.location.pathname).toBe('/drinks/17222'), { timeout: 3000 });
   });
 
-  test('Verifica se é possível pesquisar pelo ingrediente na pagina de drinks.', () => {
-    const { history } = renderWithRouter(<App />);
-    history.push('/drinks');
+  it('Testa a procura por primeira letra em drinks', async () => {
+    const match = { path: '/drinks' };
+    renderWithRouter(
+      <Provider>
+        <Recipes match={ match } />
+      </Provider>,
+    );
 
-    const searchButton = screen.getByTestId(ID_BUTTON_SEARCH);
-    userEvent.click(searchButton);
-
-    const radioButton = screen.getByTestId(ID_RADIO_INGREDIENT);
-    userEvent.click(radioButton);
-
-    const searchInput = screen.getByTestId(ID_INPUT_SEARCH);
-    userEvent.type(searchInput, 'cognac');
-
-    const buttonSearch = screen.getByTestId(ID_BUTTON_GET_SEARCH);
-    userEvent.click(buttonSearch);
+    userEvent.click(screen.getByTestId(searchButton));
+    const input = screen.getByTestId(searchInput);
+    userEvent.type(input, 'g');
+    userEvent.click(screen.getByTestId('first-letter-search-radio'));
+    userEvent.click(screen.getByTestId(searchExec));
+    await waitFor(() => expect(screen.getByText(/Gimlet/i)).toBeInTheDocument(), { timeout: 3000 });
   });
 
-  test('Verifica se ao pesquisar na pagina de comida por mais de um letra o alerta é acionado', async () => {
-    global.alert = jest.fn(() => 'Your search must have only 1 (one) character');
+  it('Testa se o alerta aparece caso tenha mais de uma letra digitada', async () => {
+    const match = { path: '/drinks' };
+    renderWithRouter(
+      <Provider>
+        <Recipes match={ match } />
+      </Provider>,
+    );
 
-    const { history } = renderWithRouter(<App />);
-    history.push('/meals');
+    global.alert = jest.fn();
+    userEvent.click(screen.getByTestId(searchButton));
+    const input = screen.getByTestId(searchInput);
+    userEvent.type(input, 'gi');
+    userEvent.click(screen.getByTestId('first-letter-search-radio'));
+    userEvent.click(screen.getByTestId(searchExec));
 
-    const searchButton = screen.getByTestId(ID_BUTTON_SEARCH);
-    userEvent.click(searchButton);
-
-    const radioButton = screen.getByTestId(ID_RADIO_FIRST_LETTER);
-    userEvent.click(radioButton);
-
-    const searchInput = screen.getByTestId(ID_INPUT_SEARCH);
-    userEvent.paste(searchInput, 'mango');
-
-    const buttonSearch = screen.getByTestId(ID_BUTTON_GET_SEARCH);
-    userEvent.click(buttonSearch);
-
-    await waitFor(() => {
-      expect(global.alert).toHaveBeenCalled();
-    });
-    global.alert.mockClear();
+    expect(global.alert).toBeCalled();
   });
 
-  test('Verifica se retorna alert quando a busca não tem resultado', async () => {
-    global.alert = jest.fn(() => 'Sorry, we haven\'t found any recipes for these filters.');
-    const { history } = renderWithRouter(<App />);
+  it('Testa se o alerta aparece caso não encontre a receita de comida', async () => {
+    const match = { path: '/meals' };
+    renderWithRouter(
+      <Provider>
+        <Recipes match={ match } />
+      </Provider>,
+    );
 
-    history.push('/meals');
+    global.fetch = jest.fn(() => Promise.resolve({
+      json: () => Promise.resolve({ meals: null }),
+    }));
+    global.alert = jest.fn();
 
-    const searchButton = screen.getByTestId(ID_BUTTON_SEARCH);
-    userEvent.click(searchButton);
+    userEvent.click(screen.getByTestId(searchButton));
+    const input = screen.getByTestId(searchInput);
+    userEvent.type(input, 'teste');
+    userEvent.click(screen.getByTestId('ingredient-search-radio'));
+    userEvent.click(screen.getByTestId(searchExec));
 
-    const radioButton = screen.getByTestId(ID_RADIO_INGREDIENT);
-    userEvent.click(radioButton);
-
-    const searchInput = screen.getByTestId(ID_INPUT_SEARCH);
-    userEvent.paste(searchInput, 'grupo');
-
-    const buttonSearch = screen.getByTestId(ID_BUTTON_GET_SEARCH);
-
-    userEvent.click(buttonSearch);
-
-    await waitFor(() => {
-      expect(global.alert).toHaveBeenCalled();
-    });
-    global.alert.mockClear();
-  });
-
-  // test('Verifica se quando apenas um comida é encontrada, o usuário é redirecionado para a tela de detalhes', () => {
-  //   const { history } = renderWithRouter(<App />);
-  //   history.push('/meals');
-
-  //   const searchButton = screen.getByTestId(ID_BUTTON_SEARCH);
-  //   userEvent.click(searchButton);
-
-  //   const radioButton = screen.getByTestId(ID_RADIO_INGREDIENT);
-  //   userEvent.click(radioButton);
-
-  //   const searchInput = screen.getByTestId(ID_INPUT_SEARCH);
-  //   userEvent.paste(searchInput, 'burek');
-
-  //   const buttonSearch = screen.getByTestId(ID_BUTTON_GET_SEARCH);
-
-  //   userEvent.click(buttonSearch);
-  // });
-  test('Verifica se quando apenas um comida é encontrada, o usuário é redirecionado para a tela de detalhes', async () => {
-    const { history } = renderWithRouter(<App />);
-    history.push('/meals');
-
-    const searchButton = screen.getByTestId(ID_BUTTON_SEARCH);
-    userEvent.click(searchButton);
-
-    const radio = screen.getByTestId(ID_RADIO_NAME);
-    userEvent.click(radio);
-
-    const searchInput = screen.getByTestId(ID_INPUT_SEARCH);
-    userEvent.paste(searchInput, 'Arrabiata');
-
-    const buttonSearch = screen.getByTestId(ID_BUTTON_GET_SEARCH);
-    userEvent.click(buttonSearch);
-
-    await waitFor(() => expect(history.location.pathname).toBe('/meals/52771'));
-  });
-
-  test('Verifica se quando apenas um drink é encontrada, o usuário é redirecionado para a tela de detalhes', async () => {
-    const { history } = renderWithRouter(<App />);
-    history.push('/drinks');
-
-    const searchButton = screen.getByTestId(ID_BUTTON_SEARCH);
-    userEvent.click(searchButton);
-
-    const radio = screen.getByTestId(ID_RADIO_NAME);
-    userEvent.click(radio);
-
-    const searchInput = screen.getByTestId(ID_INPUT_SEARCH);
-    userEvent.paste(searchInput, 'Lassi - Mango');
-
-    const buttonSearch = screen.getByTestId(ID_BUTTON_GET_SEARCH);
-    userEvent.click(buttonSearch);
-
-    await waitFor(() => expect(history.location.pathname).toBe('/drinks/12698'));
-  });
-
-  test('Verifica se nenhum drink é encontrado, o usuário recebe um ALERT', async () => {
-    global.alert = jest.fn(() => 'Sorry, we haven\'t found any recipes for these filters.');
-    const { history } = renderWithRouter(<App />);
-    history.push('/drinks');
-
-    const searchButton = screen.getByTestId(ID_BUTTON_SEARCH);
-    userEvent.click(searchButton);
-
-    const radio = screen.getByTestId(ID_RADIO_NAME);
-    userEvent.click(radio);
-
-    const searchInput = screen.getByTestId(ID_INPUT_SEARCH);
-    userEvent.paste(searchInput, 'grupo24');
-
-    const buttonSearch = screen.getByTestId(ID_BUTTON_GET_SEARCH);
-    userEvent.click(buttonSearch);
-
-    await waitFor(() => {
-      expect(global.alert).toHaveBeenCalled();
-    });
-    global.alert.mockClear();
+    await waitFor(() => expect(global.alert).toHaveBeenCalled(), { timeout: 3000 });
   });
 });

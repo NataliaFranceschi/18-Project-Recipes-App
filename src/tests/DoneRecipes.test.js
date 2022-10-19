@@ -35,14 +35,17 @@ describe('Testa a tela pricipal', () => {
     const match = { path: '/done-recipes' };
     renderWithRouter(<DoneRecipes match={ match } />);
   });
+
   it('Verifica se a comida feita aparece na tela', async () => {
     expect(screen.getByText(/kumpir/i)).toBeInTheDocument();
     expect(screen.getByText('Done in: 03/10/2022 11:03:25')).toBeInTheDocument();
   });
+
   it('Verifica se a bebida feita aparece na tela', async () => {
     expect(screen.getByText(/Florida Bushwacker/i)).toBeInTheDocument();
     expect(screen.getByText('Done in: 04/10/2022 09:53:48')).toBeInTheDocument();
   });
+
   it('Verifica se ao clicar no drink aparece só bebida, no meal só comida e all todos', async () => {
     const allButton = screen.getByTestId(/filter-by-all-btn/i);
     const drinkButton = screen.getByTestId(/filter-by-drink-btn/i);
@@ -60,12 +63,14 @@ describe('Testa a tela pricipal', () => {
     expect(screen.getByText(/Florida Bushwacker/i)).toBeInTheDocument();
     expect(screen.getByText(/kumpir/i)).toBeInTheDocument();
   });
+
   it('Verifica se copia o link da bebida', async () => {
     const shareButton = screen.getByTestId(/0-horizontal-share-btn/i);
     userEvent.click(shareButton);
     const link = await screen.findAllByText(/Link copied!/i);
     expect(link[1]).toBeInTheDocument();
   });
+
   it('Verifica se copia o link da comida', async () => {
     const shareButton = screen.getByTestId(/1-horizontal-share-btn/i);
     userEvent.click(shareButton);

@@ -37,7 +37,6 @@ function FavoriteRecipes({ match }) {
   };
 
   const deletFavorite = (id) => {
-    console.log(id);
     favorite.filter((fav) => fav.id !== id);
     const delet = favorite.filter((ele) => ele.id !== id);
     localStorage.setItem(
