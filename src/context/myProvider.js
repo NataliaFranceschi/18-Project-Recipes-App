@@ -6,7 +6,7 @@ function Provider({ children }) {
   const [isDisabled, setIsDisabled] = useState(true);
   const [dataInputs, setDataInputs] = useState({ email: '', password: '' });
   const [searchResult, setSearchResult] = useState('');
-
+  const [nameCategory, setNameCategory] = useState('');
   const [progressRecipe, setProgressRecipe] = useState({
     drinks: {},
     meals: {},
@@ -120,6 +120,8 @@ function Provider({ children }) {
     localStorageIngredientProgress,
     addMeals,
     addDrinks,
+    nameCategory,
+    setNameCategory,
 
   };
 
