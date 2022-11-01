@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/18-Project-Recipes-App/static/css/main.94e696db.css",
-    "main.js": "/18-Project-Recipes-App/static/js/main.16128069.js",
+    "main.js": "/18-Project-Recipes-App/static/js/main.993e06f2.js",
     "static/media/Vegetable.png": "/18-Project-Recipes-App/static/media/Vegetable.69fc2e9e471c8785f69f.png",
     "static/media/Pasta.svg": "/18-Project-Recipes-App/static/media/Pasta.70da2517ae77ff02da43d95d2a9a46a3.svg",
     "static/media/side.svg": "/18-Project-Recipes-App/static/media/side.1e1f69597d6995247d100824e393a058.svg",
@@ -35,10 +35,10 @@
     "static/media/done.svg": "/18-Project-Recipes-App/static/media/done.6816d2ba61af90c99c9aa96a2451ce65.svg",
     "static/media/logout.svg": "/18-Project-Recipes-App/static/media/logout.effe1596845a52bcd39a2f613b79b526.svg",
     "main.94e696db.css.map": "/18-Project-Recipes-App/static/css/main.94e696db.css.map",
-    "main.16128069.js.map": "/18-Project-Recipes-App/static/js/main.16128069.js.map"
+    "main.993e06f2.js.map": "/18-Project-Recipes-App/static/js/main.993e06f2.js.map"
   },
   "entrypoints": [
     "static/css/main.94e696db.css",
-    "static/js/main.16128069.js"
+    "static/js/main.993e06f2.js"
   ]
 }
