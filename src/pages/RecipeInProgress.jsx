@@ -59,18 +59,18 @@ function RecipeInProgress({ match }) {
     }
   };
 
-  const filterIngredientes = ingredients.filter((ele) => ele !== '');
-  const numberItensStorageMeals = progressRecipe.meals[id] || [];
-  const numberItensStorageDrinks = progressRecipe.drinks[id] || [];
+  const filterIngredientes = ingredients.filter((e) => e !== '');
+  const itensStorageMeals = progressRecipe.meals[id] || [];
+  const itensStorageDrinks = progressRecipe.drinks[id] || [];
 
   const habilitarButton = () => {
-    if (match.url.includes('meal') && filterIngredientes.length
-    === numberItensStorageMeals.length) {
+    if (match.url.includes('meal')
+      && filterIngredientes.every((e) => itensStorageMeals.includes(e))) {
       return setIsDisabled(false);
     }
 
-    if (match.url.includes('drink') && filterIngredientes.length
-    === numberItensStorageDrinks.length) {
+    if (match.url.includes('drink')
+      && filterIngredientes.every((e) => itensStorageDrinks.includes(e))) {
       return setIsDisabled(false);
     }
     return setIsDisabled(true);
@@ -109,7 +109,7 @@ function RecipeInProgress({ match }) {
         name: details.strMeal,
         image: details.strMealThumb,
         doneDate: myDate,
-        tags: details.strTags.split(','),
+        tags: details.strTags === null ? [] : details.strTags.split(','),
       };
       saveDone(objFav);
     } else {
