@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { useHistory } from 'react-router';
 import shareIcon from '../images/shareIcon.svg';
 import { saveFav } from '../utils/requestsAPI';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
 import { FAV_RECIPES } from '../utils/constants';
 import '../style/favShareBar.css';
+import logo from '../images/logo_b.png';
 
 function FavShareBar({ url, recipe, delet }) {
+  const history = useHistory();
   const [alertCopy, setAlertCopy] = useState(false);
   const [saved, setSaved] = useState(false);
 
@@ -89,6 +92,13 @@ function FavShareBar({ url, recipe, delet }) {
             : <img src={ blackHeartIcon } alt="" />
         }
       </button>
+      <img
+        className="logob"
+        src={ logo }
+        alt="logo"
+        role="presentation"
+        onClick={ () => history.push('/meals') }
+      />
     </div>
   );
 }

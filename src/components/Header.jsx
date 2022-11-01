@@ -29,7 +29,13 @@ function Header({ name }) {
 
   return (
     <div data-testid="page-title">
-      <img className="logo" src={ logo } alt="logo" />
+      <img
+        className="logo"
+        src={ logo }
+        alt="logo"
+        role="presentation"
+        onClick={ () => history.push('/meals') }
+      />
       <div className="header">
         {
           validationHeader[name][2].pesquisa
