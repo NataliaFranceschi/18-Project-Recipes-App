@@ -17,6 +17,8 @@ function Drinks() {
     setSearchON,
     searchResult,
     categoryON,
+    nameCategory,
+    setNameCategory,
   } = useContext(context);
   const [categories, setCategories] = useState([]);
   const [categoryDrink, setCategoryDrink] = useState([]);
@@ -43,10 +45,16 @@ function Drinks() {
   };
 
   const handleClick = async (category) => {
-    const response = await fetchCaterogyDrink(category);
-    setCategoryDrink(response);
-    setCategoryON(!categoryON);
-    setSearchON(false);
+    if (nameCategory !== category) {
+      const response = await fetchCaterogyDrink(category);
+      setCategoryDrink(response);
+      setSearchON(false);
+      setCategoryON(true);
+      setNameCategory(category);
+    } else {
+      setNameCategory('all');
+      setCategoryON(false);
+    }
   };
 
   const allDrinks = () => {

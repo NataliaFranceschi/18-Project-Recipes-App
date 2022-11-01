@@ -16,6 +16,8 @@ function Meals() {
     searchON,
     setSearchON,
     searchResult,
+    nameCategory,
+    setNameCategory,
   } = useContext(context);
 
   const [categories, setCategories] = useState([]);
@@ -43,10 +45,16 @@ function Meals() {
   };
 
   const handleClick = async (category) => {
-    const response = await fetchCategoryMeal(category);
-    setCategoryMeal(response);
-    setCategoryON(!categoryON);
-    setSearchON(false);
+    if (nameCategory !== category) {
+      const response = await fetchCategoryMeal(category);
+      setCategoryMeal(response);
+      setSearchON(false);
+      setCategoryON(true);
+      setNameCategory(category);
+    } else {
+      setNameCategory('all');
+      setCategoryON(false);
+    }
   };
 
   const allMeals = () => {
