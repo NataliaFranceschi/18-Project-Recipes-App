@@ -13,7 +13,7 @@ function DoneRecipes({ match }) {
   const [dones, setDones] = useState([]);
   const [renderDones, setRenderDones] = useState([]);
   const [update, setUpdate] = useState(true);
-  const [alertCopy, setAlertCopy] = useState(false);
+  const [alertCopy, setAlertCopy] = useState('');
 
   useEffect(() => {
     let getDones = JSON.parse(localStorage.getItem(DONE_RECIPES));
@@ -28,7 +28,7 @@ function DoneRecipes({ match }) {
 
   const copyBoard = ({ target: { id } }) => {
     navigator.clipboard.writeText(`http://localhost:3000${id}`);
-    setAlertCopy(true);
+    setAlertCopy(id);
   };
 
   const handleFilter = ({ target: { id } }) => {
@@ -136,7 +136,7 @@ function DoneRecipes({ match }) {
                     <img id={ `/meals/${e.id}` } src={ shareIcon } alt="shareIcon" />
                   </button>
                   {
-                    alertCopy
+                    (alertCopy.includes(e.id))
                     && <p>Link copied!</p>
                   }
                 </div>
@@ -176,7 +176,7 @@ function DoneRecipes({ match }) {
                   <img id={ `/drinks/${e.id}` } src={ shareIcon } alt="shareIcon" />
                 </button>
                 {
-                  alertCopy
+                  (alertCopy.includes(e.id))
                     && <p>Link copied!</p>
                 }
               </div>

@@ -24,9 +24,6 @@ describe('Testa a tela pricipal', () => {
       type: 'meal' }];
 
     localStorage.setItem('favoriteRecipes', JSON.stringify(favorite));
-    navigator.clipboard = {
-      writeText: jest.fn(),
-    };
     const match = { path: '/favorite-recipes' };
     renderWithRouter(<FavoriteRecipes match={ match } />);
   });
@@ -37,20 +34,6 @@ describe('Testa a tela pricipal', () => {
 
   it('Verifica se a bebida salva aparece na tela', async () => {
     expect(screen.getByText(/A1/i)).toBeInTheDocument();
-  });
-
-  it('Verifica se copia o link da bebida', async () => {
-    const shareButton = screen.getByTestId(/0-horizontal-share-btn/i);
-    userEvent.click(shareButton);
-    const link = await screen.findAllByText(/Link copied!/i);
-    expect(link[1]).toBeInTheDocument();
-  });
-
-  it('Verifica se copia o link da comida', async () => {
-    const shareButton = screen.getByTestId(/1-horizontal-share-btn/i);
-    userEvent.click(shareButton);
-    const link = await screen.findAllByText(/Link copied!/i);
-    expect(link[1]).toBeInTheDocument();
   });
 
   it('Verifica se ao clicar no coração a comida é desvaforitada', async () => {

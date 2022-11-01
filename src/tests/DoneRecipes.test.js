@@ -29,9 +29,6 @@ describe('Testa a tela pricipal', () => {
       type: 'drink' }];
 
     localStorage.setItem('doneRecipes', JSON.stringify(done));
-    navigator.clipboard = {
-      writeText: jest.fn(),
-    };
     const match = { path: '/done-recipes' };
     renderWithRouter(<DoneRecipes match={ match } />);
   });
@@ -62,19 +59,5 @@ describe('Testa a tela pricipal', () => {
     userEvent.click(allButton);
     expect(screen.getByText(/Florida Bushwacker/i)).toBeInTheDocument();
     expect(screen.getByText(/kumpir/i)).toBeInTheDocument();
-  });
-
-  it('Verifica se copia o link da bebida', async () => {
-    const shareButton = screen.getByTestId(/0-horizontal-share-btn/i);
-    userEvent.click(shareButton);
-    const link = await screen.findAllByText(/Link copied!/i);
-    expect(link[1]).toBeInTheDocument();
-  });
-
-  it('Verifica se copia o link da comida', async () => {
-    const shareButton = screen.getByTestId(/1-horizontal-share-btn/i);
-    userEvent.click(shareButton);
-    const link = await screen.findAllByText(/Link copied!/i);
-    expect(link[1]).toBeInTheDocument();
   });
 });

@@ -14,7 +14,7 @@ function FavoriteRecipes({ match }) {
   const [favorite, setFavorites] = useState([]);
   const [renderFav, setRenderFav] = useState([]);
   const [update, setUpdate] = useState(true);
-  const [alertCopy, setAlertCopy] = useState(false);
+  const [alertCopy, setAlertCopy] = useState('');
 
   useEffect(() => {
     let getFavorites = JSON.parse(localStorage.getItem(FAV_RECIPES));
@@ -28,7 +28,7 @@ function FavoriteRecipes({ match }) {
   }, [update]);
 
   const copyBoard = (id) => {
-    setAlertCopy(true);
+    setAlertCopy(id);
     const idRecipe = id;
     const filterLocal = favorite.filter((fav) => fav.id === idRecipe);
     const typeRecipe = filterLocal[0].type;
@@ -149,7 +149,7 @@ function FavoriteRecipes({ match }) {
                     <img src={ shareIcon } alt="shareIcon" />
                   </button>
                   {
-                    alertCopy
+                    (alertCopy.includes(e.id))
                     && <p>Link copied!</p>
                   }
                 </div>
@@ -194,7 +194,7 @@ function FavoriteRecipes({ match }) {
                   <img src={ shareIcon } alt="shareIcon" />
                 </button>
                 {
-                  alertCopy
+                  (alertCopy.includes(e.id))
                     && <p>Link copied!</p>
                 }
               </div>
